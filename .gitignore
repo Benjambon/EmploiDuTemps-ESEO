@@ -1,0 +1,19 @@
+# Dossiers de compilation
+build/
+build-*/
+*.Debug/
+*.Release/
+
+# Fichiers générés par Qt
+*.pro.user
+*.pro.user.*
+*.moc
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+*.obj
+*.o
+
+# Fichiers de l'OS
+.DS_Store
+Thumbs.db
