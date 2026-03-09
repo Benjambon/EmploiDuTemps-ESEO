@@ -6,6 +6,8 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QFile>
+#include <vector>
+#include <QString>
 
 enum TypeSalle{
     SALLE,
@@ -13,19 +15,27 @@ enum TypeSalle{
     INFORMATIQUE
 };
 
-class salle
+class Salle
 {
 private:
-    int numero;
+    std::string numero;
     TypeSalle typeSalle;
 
 public:
-    salle();
-    salle(int numero, TypeSalle typeSalle);
-    int getNumero() const;
-    void setNumero(int newNumero);
+    Salle();
+    Salle(std::string numero, TypeSalle typeSalle);
+
+    std::string getNumero() const;
+    void setNumero(std::string newNumero);
     TypeSalle getTypeSalle() const;
     void setTypeSalle(TypeSalle newTypeSalle);
+    std::string toString(void) const;
+    QJsonObject toJSON(void) const;
+
+public:
+    static Salle fromJSON(QJsonObject json);
+    static void writeToJSON(std::vector<Salle> vector, QString filepath);
+    static std::vector<Salle> readFromJSON(QString filepath);
 };
 
 #endif // SALLE_H

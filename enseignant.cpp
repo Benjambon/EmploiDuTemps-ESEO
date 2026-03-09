@@ -79,6 +79,10 @@ bool Enseignant::isPrenomValid(void){
 
 }
 
+bool Enseignant::isEnseignantValid(void) {
+    return isMailValid() && isNomValid() && isPrenomValid();
+}
+
 std::string Enseignant::toString(void) const{
     std::string res= nom + " " + prenom +" "+ mail;
     return res;

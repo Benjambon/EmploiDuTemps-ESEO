@@ -38,6 +38,7 @@ public:
     bool isMailValid(void);
     bool isNomValid(void);
     bool isPrenomValid(void);
+    bool isEnseignantValid(void);
     QJsonObject toJSON(void) const;
 
 public:
