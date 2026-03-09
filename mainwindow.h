@@ -12,7 +12,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QString dataPath, QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
@@ -20,5 +20,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QString m_dataPath;
 };
-#endif // MAINWINDOW_H
+#endif // MAINWINDOW_Hx
