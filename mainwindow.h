@@ -16,7 +16,8 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_btnAjouterEnseignant_clicked(); // Ajout du slot pour le bouton
+    void on_btnAjouterEnseignant_clicked();
+    void on_btnAfficherEnseignants_clicked();
 
 private:
     Ui::MainWindow *ui;
