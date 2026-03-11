@@ -75,33 +75,19 @@ std::string Ecue::to_string() const
     switch(typeCours)
     {
         case eTypeCours::CM:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + _
-                  ", Type de cours : CM, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : CM, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
         case eTypeCours::TD:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() _
-                    ", Type de cours : TD, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TD, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
         case eTypeCours::TP_INFO:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() _
-                    ", Type de cours : TP_INFO, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
         case eTypeCours::TP_ELEC:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() _
-                    ", Type de cours : TP_ELEC, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
         case eTypeCours::EXAMEN_EN_SALE:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() _
-                    ", Type de cours : EXAMEN_EN_SALE, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_EN_SALE, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
         case eTypeCours::EXAMEN_INFO:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() _
-                    ", Type de cours : EXAMEN_INFO, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
         case eTypeCours::EXAMEN_ELEC:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() _
-                    ", Type de cours : EXAMEN_ELEC, Heure Total : " + std::to_string(heureTotal) _
-                    ", Heure restante : " + std::to_string(heurerestante);
+            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
     }
         return res;
 }
