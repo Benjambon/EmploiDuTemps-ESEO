@@ -10,6 +10,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    //MainWindow w;
+    //w.show();
+    //return a.exec();
 
     // Recherche automatique et concise du dossier data
     QDir dir(QCoreApplication::applicationDirPath());

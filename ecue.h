@@ -40,8 +40,7 @@ public:
     GroupeEtudiant getGroupeEtudiant() const;
     void setGroupeEtudiant(const GroupeEtudiant &newGroupeEtudiant);
 
-    bool isValide();
-
+    bool isEcueValid();
 
     QJsonObject toJSON(void) const;
     static Ecue fromJSON(QJsonObject json);
