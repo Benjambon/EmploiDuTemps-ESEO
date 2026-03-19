@@ -3,7 +3,7 @@
 #include <QDir>
 #include <iostream>
 #include "enseignant.h"
-#include <QApplication>
+#include "salle.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,9 +32,20 @@ int main(int argc, char *argv[])
     // 4. Sauvegarde dans le fichier JSON
     Enseignant::writeToJSON(listeEnseignants, filepath);
     std::cout << "Enseignant sauvegarde dans : " << filepath.toStdString() << std::endl;
+
+    // Ajout du test pour la classe Salle
+    Salle salleInfo("001", TypeSalle::INFORMATIQUE);
+    std::cout << "Affichage de la salle : " << salleInfo.toString() << std::endl;
+
+    QString filepathSalles = data_path + "salles.json";
+    std::vector<Salle> listeSalles;
+    listeSalles.push_back(salleInfo);
+
+    Salle::writeToJSON(listeSalles, filepathSalles);
+    std::cout << "Salle sauvegardee dans : " << filepathSalles.toStdString() << std::endl;
+
     MainWindow w(data_path);
     w.show();
-
 
     return a.exec();
 }
