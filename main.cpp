@@ -10,9 +10,6 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    //MainWindow w;
-    //w.show();
-    //return a.exec();
 
     // Recherche automatique et concise du dossier data
     QDir dir(QCoreApplication::applicationDirPath());
@@ -40,8 +37,8 @@ int main(int argc, char *argv[])
     // 4. Sauvegarde dans le fichier JSON
     Ecue::writeToJSON(listeEcue, filepath);
     std::cout << "Ecue sauvegarde dans : " << filepath.toStdString() << std::endl;
-    //MainWindow w(data_path);
-    //w.show();
+    MainWindow w(data_path);
+    w.show();
 
 
     return 0 ;
