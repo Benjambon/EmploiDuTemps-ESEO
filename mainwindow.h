@@ -19,6 +19,12 @@ private slots:
     void on_btnAjouterEnseignant_clicked();
     void on_btnAfficherEnseignants_clicked();
 
+    void on_btnAjouterGroupe_clicked();
+    void on_btnAfficherGroupes_clicked();
+
+    void on_btnAjouterSalle_clicked();
+    void on_btnAfficherSalles_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString m_dataPath;
