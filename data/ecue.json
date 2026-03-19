@@ -1,0 +1,15 @@
+[
+    {
+        "Enseignant": {
+            "mail": "zinedine.zidane@eseo.fr",
+            "nom": "zidane",
+            "prenom": "zinedine"
+        },
+        "GroupeEtudiant": {
+            "nom": "E4e"
+        },
+        "HeureRestante": 0,
+        "HeureTotal": 14,
+        "TypeCours": "EXAMEN_ELEC"
+    }
+]
