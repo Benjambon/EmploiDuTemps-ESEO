@@ -25,11 +25,47 @@ Salle::Salle() {
     this->typeSalle=TypeSalle::SALLE;
 }
 
-std::string Salle::toString(void) const{
-    std::string res=  typeSalle +" " + numero ;
-    return res;
+bool Salle::isSalleValid(void){
+    if (this->numero.length() != 3) {
+        return false;
+    }
+
+
+    for (char c : this->numero) {
+        if (!std::isdigit(c)) {
+            return false;
+        }
+    }
+
+    if (typeSalle != TypeSalle::SALLE &&
+        typeSalle != TypeSalle::ELECTRONIQUE &&
+        typeSalle != TypeSalle::INFORMATIQUE) {
+        return false;
+    }
+
+    return true;
 }
 
+std::string Salle::toString(void) const {
+    std::string typeStr;
+
+    switch (typeSalle) {
+    case TypeSalle::SALLE:
+        typeStr = "Salle";
+        break;
+    case TypeSalle::ELECTRONIQUE:
+        typeStr = "Electronique";
+        break;
+    case TypeSalle::INFORMATIQUE:
+        typeStr = "Informatique";
+        break;
+    default:
+        typeStr = "Inconnu";
+        break;
+    }
+
+    return typeStr + " " + numero;
+}
 QJsonObject Salle::toJSON(void) const{
     QJsonObject json;
     json["numero"] = QString::fromStdString(this->numero);

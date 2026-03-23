@@ -44,7 +44,7 @@ public:
     GroupeEtudiant getGroupeEtudiant() const;
     void setGroupeEtudiant(const GroupeEtudiant &newGroupeEtudiant);
 
-
+    bool isValide();
 
     QJsonObject toJSON(void) const;
     static Ecue fromJSON(QJsonObject json);

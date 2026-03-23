@@ -92,9 +92,9 @@ std::string Ecue::to_string() const
         return res;
 }
 
-bool Ecue::isValide()
+bool Ecue::isEcueValid()
 {
-    if (this->enseignant.isEnseignantValid() && this->groupeEtudiant.isNomValid()){
+    if (this->enseignant.isEnseignantValid() && this->groupeEtudiant.isNomValid() && this->heureTotal != 0 && this->heureRestante<=this->heureTotal){
         return true;
     }else{
         return false;

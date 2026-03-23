@@ -29,6 +29,7 @@ public:
     void setNumero(std::string newNumero);
     TypeSalle getTypeSalle() const;
     void setTypeSalle(TypeSalle newTypeSalle);
+    bool isSalleValid(void);
     std::string toString(void) const;
     QJsonObject toJSON(void) const;
 
