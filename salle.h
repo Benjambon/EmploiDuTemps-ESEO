@@ -22,6 +22,10 @@ private:
     TypeSalle typeSalle;
 
 public:
+    enum code_erreur_numero { NUMERO_OK, NUMERO_TROP_LONG,NUMERO_PAS_CHIFFRE};
+    enum code_erreur_type { TYPE_OK, TYPE_VIDE, TYPE_INVALIDE};
+
+
     Salle();
     Salle(std::string numero, TypeSalle typeSalle);
 
@@ -29,7 +33,8 @@ public:
     void setNumero(std::string newNumero);
     TypeSalle getTypeSalle() const;
     void setTypeSalle(TypeSalle newTypeSalle);
-    bool isSalleValid(void);
+    code_erreur_numero isNumeroValid(void);
+    code_erreur_type isTypeValid(void);
     std::string toString(void) const;
     QJsonObject toJSON(void) const;
 

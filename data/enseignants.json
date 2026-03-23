@@ -1,17 +1,12 @@
 [
     {
         "mail": "zinedine.zidane@eseo.fr",
-        "nom": "zinedine",
-        "prenom": "zidane"
+        "nom": "zidane",
+        "prenom": "zinedine"
     },
     {
         "mail": "vincent.trenchant@eseo.fr",
-        "nom": "vincent",
-        "prenom": "trenchant"
-    },
-    {
-        "mail": "sdf@mail.com",
-        "nom": "dsqd",
-        "prenom": "sfdsdf"
+        "nom": "trenchant",
+        "prenom": "vincent"
     }
 ]
