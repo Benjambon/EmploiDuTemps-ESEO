@@ -13,15 +13,15 @@
 
 enum class eTypeCours
 {
-    CM, TD, TP_INFO, TP_ELEC, EXAMEN_EN_SALE, EXAMEN_INFO, EXAMEN_ELEC
+    CM, TD, TP_INFO, TP_ELEC, EXAMEN_EN_SALE, EXAMEN_INFO, EXAMEN_ELEC, DEFAULT
 };
 
 class Ecue
 {
 public:
-    enum code_erreur_typeCours { TYPECOURS_OK, TYPECOURS_VIDE, TYPECOURS_INVALIDE_ENUM };
-    enum code_erreur_heureTotal { HEURETOTAL_OK, HEURETOTAL_VIDE, HEURETOTAL_INVALIDE_TYPE };
-    enum code_erreur_heureRestante { HEURERESTANTE_OK, HEURERESTANTE_VIDE, HUERERESTANTE_INVALIDE_TYPE, HEURERESTANTE_MAX };
+    enum code_erreur_typeCours { TYPECOURS_OK, TYPECOURS_NONDEFINIT };
+    enum code_erreur_heureTotal { HEURETOTAL_OK, HEURETOTAL_NUL, HEURETOTAL_NEGATIF, HEURETOTAL_IMPAIR };
+    enum code_erreur_heureRestante { HEURERESTANTE_OK, HEURERESTANTE_VIDE, HUERERESTANTE_INVALIDE_TYPE, HEURERESTANTE_INFERIEUR_TOTAL };
 private:
     Enseignant enseignant;
     GroupeEtudiant groupeEtudiant;
@@ -44,7 +44,9 @@ public:
     GroupeEtudiant getGroupeEtudiant() const;
     void setGroupeEtudiant(const GroupeEtudiant &newGroupeEtudiant);
 
-    bool isValide();
+    code_erreur_typeCours isTypeCoursValid(const eTypeCours& typeCours);
+    code_erreur_heureTotal isHeureTotalValid(const int& heureTotal);
+    code_erreur_heureRestante idHeureRestanteValid(const int& heureTotal);
 
     QJsonObject toJSON(void) const;
     static Ecue fromJSON(QJsonObject json);

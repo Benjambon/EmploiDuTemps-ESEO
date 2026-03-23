@@ -4,7 +4,7 @@ Ecue::Ecue()
 {
     this->enseignant = Enseignant();
     this->groupeEtudiant = GroupeEtudiant();
-    this->typeCours = eTypeCours::CM;
+    this->typeCours = eTypeCours::DEFAULT;
     this->heureTotal = 0;
     this->heureRestante = 0;
 }
@@ -99,6 +99,21 @@ bool Ecue::isEcueValid()
     }else{
         return false;
     }
+}
+
+Ecue::code_erreur_typeCours Ecue::isTypeCoursValid(const eTypeCours& typeCours)
+{
+    if(typeCours == eTypeCours::DEFAULT) { return Ecue::TYPECOURS_NONDEFINIT; }
+    return code_erreur_typeCours::TYPECOURS_OK;
+}
+
+
+Ecue::code_erreur_heureTotal isHeureTotalValid(const int& heureTotal)
+{
+    if(heureTotal == 0) { return Ecue::HEURETOTAL_NUL; }
+    if(heureTotal < 0) { return Ecue::HEURETOTAL_NEGATIF; }
+    if(heureTotal % 2) { return Ecue::HEURETOTAL_IMPAIR; }
+    return Ecue::HEURETOTAL_OK;
 }
 
 QJsonObject Ecue::toJSON(void) const
