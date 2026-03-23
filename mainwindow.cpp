@@ -15,6 +15,8 @@
 #include "groupeetudiant.h"
 #include "salle.h"
 #include "controleur_salle.h"
+#include "controleur_groupeetudiant.h"
+#include "controleur_enseignant.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -35,49 +37,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnAjouterEnseignant_clicked()
 {
-    QDialog dialog(this);
-    dialog.setWindowTitle("Ajouter un enseignant");
+    // Appel du contrôleur
+    Enseignant* nouvelEnseignant = Controleur_enseignant::creationEnseignant();
 
-    QVBoxLayout *layoutMain = new QVBoxLayout(&dialog);
-    QFormLayout *layoutForm = new QFormLayout();
-
-    QLineEdit *editNom = new QLineEdit(&dialog);
-    QLineEdit *editPrenom = new QLineEdit(&dialog);
-    QLineEdit *editMail = new QLineEdit(&dialog);
-
-    layoutForm->addRow("Nom :", editNom);
-    layoutForm->addRow("Prénom :", editPrenom);
-    layoutForm->addRow("Mail :", editMail);
-
-    layoutMain->addLayout(layoutForm);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttonBox->button(QDialogButtonBox::Ok)->setText("Créer");
-    buttonBox->button(QDialogButtonBox::Cancel)->setText("Annuler");
-    layoutMain->addWidget(buttonBox);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        std::string nom = editNom->text().toStdString();
-        std::string prenom = editPrenom->text().toStdString();
-        std::string mail = editMail->text().toStdString();
-
-        Enseignant nouvelEnseignant;
-        if (mail.empty()) {
-            nouvelEnseignant = Enseignant(nom, prenom);
-        } else {
-            nouvelEnseignant = Enseignant(nom, prenom, mail);
-        }
-
+    if (nouvelEnseignant != nullptr) {
         QString fichierJson = m_dataPath + "enseignants.json";
         std::vector<Enseignant> liste = Enseignant::readFromJSON(fichierJson);
 
-        liste.push_back(nouvelEnseignant);
+        liste.push_back(*nouvelEnseignant);
         Enseignant::writeToJSON(liste, fichierJson);
 
         QMessageBox::information(this, "Succès", "L'enseignant a été ajouté et sauvegardé.");
+
+        delete nouvelEnseignant;
     }
 }
 
@@ -105,36 +77,21 @@ void MainWindow::on_btnAfficherEnseignants_clicked()
 
 void MainWindow::on_btnAjouterGroupe_clicked()
 {
-    QDialog dialog(this);
-    dialog.setWindowTitle("Ajouter un groupe");
+    // Appel du contrôleur
+    GroupeEtudiant* nouveauGroupe = Controleur_groupeetudiant::creationGroupe();
 
-    QVBoxLayout *layoutMain = new QVBoxLayout(&dialog);
-    QFormLayout *layoutForm = new QFormLayout();
-    QLineEdit *editNom = new QLineEdit(&dialog);
-
-    layoutForm->addRow("Nom du groupe :", editNom);
-    layoutMain->addLayout(layoutForm);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttonBox->button(QDialogButtonBox::Ok)->setText("Créer");
-    buttonBox->button(QDialogButtonBox::Cancel)->setText("Annuler");
-    layoutMain->addWidget(buttonBox);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        std::string nom = editNom->text().toStdString();
-
-        GroupeEtudiant nouveauGroupe(nom);
-
+    // Si le pointeur n'est pas nul, on sauvegarde
+    if (nouveauGroupe != nullptr) {
         QString fichierJson = m_dataPath + "groupes.json";
         std::vector<GroupeEtudiant> liste = GroupeEtudiant::readFromJSON(fichierJson);
 
-        liste.push_back(nouveauGroupe);
+        liste.push_back(*nouveauGroupe);
         GroupeEtudiant::writeToJSON(liste, fichierJson);
 
         QMessageBox::information(this, "Succès", "Le groupe a été ajouté et sauvegardé.");
+
+        // Libération de la mémoire
+        delete nouveauGroupe;
     }
 }
 
