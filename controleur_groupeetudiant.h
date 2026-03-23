@@ -2,6 +2,7 @@
 #define CONTROLEUR_GROUPEETUDIANT_H
 
 #include <string>
+#include "groupeetudiant.h"
 
 class Controleur_groupeetudiant
 {
