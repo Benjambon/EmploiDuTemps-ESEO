@@ -9,9 +9,6 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    controleur_enseignant.cpp \
-    controleur_groupeetudiant.cpp \
-    controleur_salle.cpp \
     ecue.cpp \
     enseignant.cpp \
     groupeetudiant.cpp \
@@ -20,9 +17,6 @@ SOURCES += \
     salle.cpp
 
 HEADERS += \
-    controleur_enseignant.h \
-    controleur_groupeetudiant.h \
-    controleur_salle.h \
     ecue.h \
     enseignant.h \
     groupeetudiant.h \
