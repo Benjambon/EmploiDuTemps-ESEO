@@ -5,9 +5,7 @@
 #include "enseignant.h"
 #include "salle.h"
 
-#include "controleur_groupeetudiant.h"
-#include "controleur_enseignant.h"
-#include "controleur_salle.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -51,7 +49,7 @@ int main(int argc, char *argv[])
 
     // TEST Controleurs
 
-    /* tester si le resultat est bein celui quon souhaite */
+    /* tester si le resultat est bein celui quon souhaite
 
     std::string Nom = "Vadot";
     std::string resNom = Controleur_enseignant::TestNomEnseignant(Nom);
@@ -100,7 +98,7 @@ int main(int argc, char *argv[])
     std::string resSalle3 = Controleur_salle::TestSalle("1004", TypeSalle::ELECTRONIQUE);
     std::cout << resSalle3 << std::endl; // Affiche l'erreur
 
-
+*/
     MainWindow w(data_path);
     w.show();
 

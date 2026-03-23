@@ -10,12 +10,11 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QComboBox>
-
-// Inclusions pour la logique métier
 #include <vector>
 #include "enseignant.h"
 #include "groupeetudiant.h"
 #include "salle.h"
+#include "controleur_salle.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -161,51 +160,23 @@ void MainWindow::on_btnAfficherGroupes_clicked()
 // Gestion des Salles
 // --------------------------------------------------------
 
+
 void MainWindow::on_btnAjouterSalle_clicked()
 {
-    QDialog dialog(this);
-    dialog.setWindowTitle("Ajouter une salle");
+    Salle* nouvelleSalle = Controleur_salle::creationSalle();
 
-    QVBoxLayout *layoutMain = new QVBoxLayout(&dialog);
-    QFormLayout *layoutForm = new QFormLayout();
-
-    QLineEdit *editNumero = new QLineEdit(&dialog);
-    QComboBox *comboType = new QComboBox(&dialog);
-
-    comboType->addItem("Salle standard", TypeSalle::SALLE);
-    comboType->addItem("Electronique", TypeSalle::ELECTRONIQUE);
-    comboType->addItem("Informatique", TypeSalle::INFORMATIQUE);
-
-    layoutForm->addRow("Numéro :", editNumero);
-    layoutForm->addRow("Type :", comboType);
-    layoutMain->addLayout(layoutForm);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttonBox->button(QDialogButtonBox::Ok)->setText("Créer");
-    buttonBox->button(QDialogButtonBox::Cancel)->setText("Annuler");
-    layoutMain->addWidget(buttonBox);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        std::string numero = editNumero->text().toStdString();
-        TypeSalle type = static_cast<TypeSalle>(comboType->currentData().toInt());
-
-        Salle nouvelleSalle(numero, type);
-
-        if (!nouvelleSalle.isSalleValid()) {
-            QMessageBox::warning(this, "Erreur", "Le numéro de salle doit contenir exactement 3 chiffres.");
-            return;
-        }
-
+    // Si la salle n'est pas nulle, c'est que l'utilisateur a validé la création
+    if (nouvelleSalle != nullptr) {
         QString fichierJson = m_dataPath + "salles.json";
         std::vector<Salle> liste = Salle::readFromJSON(fichierJson);
 
-        liste.push_back(nouvelleSalle);
+        liste.push_back(*nouvelleSalle);
         Salle::writeToJSON(liste, fichierJson);
 
         QMessageBox::information(this, "Succès", "La salle a été ajoutée et sauvegardée.");
+
+        // Pensez à libérer la mémoire allouée dynamiquement par le "new" dans le contrôleur
+        delete nouvelleSalle;
     }
 }
 

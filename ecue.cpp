@@ -92,14 +92,14 @@ std::string Ecue::to_string() const
         return res;
 }
 
-bool Ecue::isEcueValid()
+/**bool Ecue::isEcueValid()
 {
     if (this->enseignant.isEnseignantValid() && this->groupeEtudiant.isNomValid() && this->heureTotal != 0 && this->heureRestante<=this->heureTotal){
         return true;
     }else{
         return false;
     }
-}
+}**/
 
 QJsonObject Ecue::toJSON(void) const
 {
