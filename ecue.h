@@ -18,6 +18,10 @@ enum class eTypeCours
 
 class Ecue
 {
+public:
+    enum code_erreur_typeCours { TYPECOURS_OK, TYPECOURS_VIDE, TYPECOURS_INVALIDE_ENUM };
+    enum code_erreur_heureTotal { HEURETOTAL_OK, HEURETOTAL_VIDE, HEURETOTAL_INVALIDE_TYPE };
+    enum code_erreur_heureRestante { HEURERESTANTE_OK, HEURERESTANTE_VIDE, HUERERESTANTE_INVALIDE_TYPE, HEURERESTANTE_MAX };
 private:
     Enseignant enseignant;
     GroupeEtudiant groupeEtudiant;
@@ -40,7 +44,6 @@ public:
     GroupeEtudiant getGroupeEtudiant() const;
     void setGroupeEtudiant(const GroupeEtudiant &newGroupeEtudiant);
 
-    bool isValide();
 
 
     QJsonObject toJSON(void) const;
