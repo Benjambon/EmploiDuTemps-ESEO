@@ -74,22 +74,33 @@ std::string Ecue::to_string() const
     std::string res = "";
     switch(typeCours)
     {
-        case eTypeCours::CM:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : CM, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        case eTypeCours::TD:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TD, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        case eTypeCours::TP_INFO:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        case eTypeCours::TP_ELEC:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        case eTypeCours::EXAMEN_EN_SALE:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_EN_SALE, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        case eTypeCours::EXAMEN_INFO:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        case eTypeCours::EXAMEN_ELEC:
-            res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+    case eTypeCours::CM:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : CM, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::TD:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TD, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::TP_INFO:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::TP_ELEC:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::EXAMEN_EN_SALLE:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_EN_SALLE, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::EXAMEN_INFO:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::EXAMEN_ELEC:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
+    case eTypeCours::DEFAULT:
+    default:
+        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : NON DEFINI, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
+        break;
     }
-        return res;
+    return res;
 }
 
 Ecue::code_erreur_typeCours Ecue::isTypeCoursValid(const eTypeCours& typeCours)
@@ -121,28 +132,41 @@ QJsonObject Ecue::toJSON(void) const
     QJsonObject json;
     json["Enseignant"] = this->enseignant.toJSON();
     json["GroupeEtudiant"] = this->groupeEtudiant.toJSON();
+
     switch(typeCours)
     {
     case eTypeCours::CM:
         json["TypeCours"] = QString::fromStdString("CM");
+        break;
     case eTypeCours::TD:
         json["TypeCours"] = QString::fromStdString("TD");
+        break;
     case eTypeCours::TP_INFO:
         json["TypeCours"] = QString::fromStdString("TP_INFO");
+        break;
     case eTypeCours::TP_ELEC:
         json["TypeCours"] = QString::fromStdString("TP_ELEC");
-    case eTypeCours::EXAMEN_EN_SALE:
-        json["TypeCours"] = QString::fromStdString("EXAMEN_EN_SALE");
+        break;
+    case eTypeCours::EXAMEN_EN_SALLE:
+        json["TypeCours"] = QString::fromStdString("EXAMEN_EN_SALLE");
+        break;
     case eTypeCours::EXAMEN_INFO:
         json["TypeCours"] = QString::fromStdString("EXAMEN_INFO");
+        break;
     case eTypeCours::EXAMEN_ELEC:
         json["TypeCours"] = QString::fromStdString("EXAMEN_ELEC");
+        break;
+    case eTypeCours::DEFAULT:
+    default:
+        json["TypeCours"] = QString::fromStdString("DEFAULT");
+        break;
     }
+
     json["HeureTotal"] = this->heureTotal;
     json["HeureRestante"] = this->heureRestante;
     return json;
 }
-//a finir
+
 Ecue Ecue::fromJSON(QJsonObject json){
     QJsonObject::iterator it;
     QJsonObject obj;
@@ -202,13 +226,14 @@ Ecue Ecue::fromJSON(QJsonObject json){
         return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::TP_INFO, iHeureTotal, iHeureRestante);
     }else if(sTypeCours == "TP_ELEC"){
         return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::TP_ELEC, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "EXAMEN_EN_SALE"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_EN_SALE, iHeureTotal, iHeureRestante);
+    }else if(sTypeCours == "EXAMEN_EN_SALLE"){
+        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_EN_SALLE, iHeureTotal, iHeureRestante);
     }else if(sTypeCours == "EXAMEN_INFO"){
         return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_INFO, iHeureTotal, iHeureRestante);
     }else if(sTypeCours == "EXAMEN_ELEC"){
         return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_ELEC, iHeureTotal, iHeureRestante);
     }
+    return Ecue();
 }
 
 void Ecue::writeToJSON(std::vector<Ecue> vector, QString filepath){
