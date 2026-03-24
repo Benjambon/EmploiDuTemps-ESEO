@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-// Inclusions pour l'interface graphique
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -17,6 +15,7 @@
 #include "controleur_salle.h"
 #include "controleur_groupeetudiant.h"
 #include "controleur_enseignant.h"
+#include "controleur_ecue.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -210,4 +209,103 @@ void MainWindow::on_btnSupprimerSalle_clicked()
         Salle::writeToJSON(liste, fichierJson);
         QMessageBox::information(this, "Succès", "La salle a été supprimée avec succès.");
     }
+}
+
+// --------------------------------------------------------
+// Gestion des ECUE
+// --------------------------------------------------------
+
+void MainWindow::on_btnAjouterEcue_clicked()
+{
+    // 1. Lecture des dépendances
+    std::vector<Enseignant> listeE = Enseignant::readFromJSON(m_dataPath + "enseignants.json");
+    std::vector<GroupeEtudiant> listeG = GroupeEtudiant::readFromJSON(m_dataPath + "groupes.json");
+
+    if (listeE.empty() || listeG.empty()) {
+        QMessageBox::warning(this, "Erreur", "Vous devez d'abord créer au moins un enseignant et un groupe pour pouvoir créer un ECUE.");
+        return;
+    }
+
+    // 2. Appel du contrôleur
+    Ecue* nouvelEcue = Controleur_ecue::creationEcue(listeE, listeG);
+
+    // 3. Sauvegarde
+    if (nouvelEcue != nullptr) {
+        QString fichierJson = m_dataPath + "ecue.json";
+        std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+        liste.push_back(*nouvelEcue);
+        Ecue::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "L'ECUE a été ajouté et sauvegardé.");
+        delete nouvelEcue;
+    }
+}
+
+void MainWindow::on_btnSupprimerEcue_clicked()
+{
+    QString fichierJson = m_dataPath + "ecue.json";
+    std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun ECUE à supprimer.");
+        return;
+    }
+
+    int index = Controleur_ecue::supprimerEcue(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Ecue::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "L'ECUE a été supprimé avec succès.");
+    }
+}
+
+void MainWindow::on_btnAfficherEcues_clicked()
+{
+    QString fichierJson = m_dataPath + "ecue.json";
+    std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Liste des ECUE", "Aucun ECUE n'est enregistré.");
+        return;
+    }
+
+    QString texteAffichage = "<h3>Liste des ECUE</h3>";
+    texteAffichage += "<table border='1' cellspacing='0' cellpadding='5' style='border-collapse: collapse;'>";
+    texteAffichage += "<tr bgcolor='#f0f0f0'>";
+    texteAffichage += "<th>Nom</th><th>Groupe</th><th>Enseignant</th><th>Détail des heures (Rest. / Tot.)</th>";
+    texteAffichage += "</tr>";
+
+    for (size_t i = 0; i < liste.size(); ++i) {
+        QString nom = QString::fromStdString(liste[i].getNom());
+        QString groupe = QString::fromStdString(liste[i].getGroupeEtudiant().getNom());
+        QString prof = QString::fromStdString(liste[i].getEnseignant().getNom());
+
+        // Création de la chaîne de détail des heures
+        QString heuresStr = "";
+        std::map<eTypeCours, int> totales = liste[i].getHeuresTotales();
+        std::map<eTypeCours, int> restantes = liste[i].getHeuresRestantes();
+
+        for (auto const& pair : totales) {
+            QString typeNom = Ecue::typeCoursToString(pair.first);
+            QString total = QString::number(pair.second);
+            QString restant = QString::number(restantes[pair.first]);
+
+            heuresStr += "<b>" + typeNom + "</b> : " + restant + "h / " + total + "h<br>";
+        }
+
+        texteAffichage += "<tr>";
+        texteAffichage += "<td>" + nom + "</td>";
+        texteAffichage += "<td>" + groupe + "</td>";
+        texteAffichage += "<td>" + prof + "</td>";
+        texteAffichage += "<td>" + heuresStr + "</td>";
+        texteAffichage += "</tr>";
+    }
+
+    texteAffichage += "</table>";
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Liste des ECUE");
+    msgBox.setText(texteAffichage);
+    msgBox.setTextFormat(Qt::RichText);
+    msgBox.exec();
 }

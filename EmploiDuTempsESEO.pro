@@ -9,10 +9,12 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    controleur_ecue.cpp \
     controleur_enseignant.cpp \
     controleur_groupeetudiant.cpp \
     controleur_salle.cpp \
     ecue.cpp \
+    ecuedialog.cpp \
     enseignant.cpp \
     enseignantdialog.cpp \
     groupeetudiant.cpp \
@@ -21,15 +23,18 @@ SOURCES += \
     mainwindow.cpp \
     salle.cpp \
     salledialog.cpp \
+    supprimerecuedialog.cpp \
     supprimerenseignantdialog.cpp \
     supprimergroupeetudiantdialog.cpp \
     supprimersalledialog.cpp
 
 HEADERS += \
+    controleur_ecue.h \
     controleur_enseignant.h \
     controleur_groupeetudiant.h \
     controleur_salle.h \
     ecue.h \
+    ecuedialog.h \
     enseignant.h \
     enseignantdialog.h \
     groupeetudiant.h \
@@ -37,6 +42,7 @@ HEADERS += \
     mainwindow.h \
     salle.h \
     salledialog.h \
+    supprimerecuedialog.h \
     supprimerenseignantdialog.h \
     supprimergroupeetudiantdialog.h \
     supprimersalledialog.h
