@@ -21,7 +21,7 @@ class Ecue
 public:
     enum code_erreur_typeCours { TYPECOURS_OK, TYPECOURS_NONDEFINIT };
     enum code_erreur_heureTotal { HEURETOTAL_OK, HEURETOTAL_NUL, HEURETOTAL_NEGATIF, HEURETOTAL_IMPAIR };
-    enum code_erreur_heureRestante { HEURERESTANTE_OK, HEURERESTANTE_NUL, HEURERESTANTE_NEGATIF, HEURERESTANTE_IMPAIR, HEURERESTANTE_SUPERIEUR_TOTAL };
+    enum code_erreur_heureRestante { HEURERESTANTE_OK, HEURERESTANTE_NEGATIF, HEURERESTANTE_IMPAIR, HEURERESTANTE_SUPERIEUR_TOTAL };
 private:
     Enseignant enseignant;
     GroupeEtudiant groupeEtudiant;

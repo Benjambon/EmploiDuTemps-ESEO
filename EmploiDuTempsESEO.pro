@@ -12,6 +12,7 @@ SOURCES += \
     controleur_enseignant.cpp \
     controleur_groupeetudiant.cpp \
     controleur_salle.cpp \
+    creneau.cpp \
     ecue.cpp \
     enseignant.cpp \
     groupeetudiant.cpp \
@@ -23,6 +24,7 @@ HEADERS += \
     controleur_enseignant.h \
     controleur_groupeetudiant.h \
     controleur_salle.h \
+    creneau.h \
     ecue.h \
     enseignant.h \
     groupeetudiant.h \

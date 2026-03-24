@@ -109,7 +109,6 @@ Ecue::code_erreur_heureTotal Ecue::isHeureTotalValid(const int& heureTotal)
 
 Ecue::code_erreur_heureRestante Ecue::isHeureRestanteValid(const int& heureRestante)
 {
-    if(heureRestante == 0) { return Ecue::HEURERESTANTE_NUL; }
     if(heureRestante < 0) { return Ecue::HEURERESTANTE_NEGATIF; }
     if(heureRestante % 2) { return Ecue::HEURERESTANTE_IMPAIR; }
     if(heureRestante > this->heureTotal) { return Ecue::HEURERESTANTE_SUPERIEUR_TOTAL; }
