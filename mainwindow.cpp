@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
-// Inclusions pour l'interface graphique
 #include <QDialog>
 #include <QVBoxLayout>
 #include <QFormLayout>
@@ -17,6 +15,7 @@
 #include "controleur_salle.h"
 #include "controleur_groupeetudiant.h"
 #include "controleur_enseignant.h"
+#include "controleur_ecue.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -210,4 +209,70 @@ void MainWindow::on_btnSupprimerSalle_clicked()
         Salle::writeToJSON(liste, fichierJson);
         QMessageBox::information(this, "Succès", "La salle a été supprimée avec succès.");
     }
+}
+
+// --------------------------------------------------------
+// Gestion des ECUE
+// --------------------------------------------------------
+
+void MainWindow::on_btnAjouterEcue_clicked()
+{
+    // 1. Lecture des dépendances
+    std::vector<Enseignant> listeE = Enseignant::readFromJSON(m_dataPath + "enseignants.json");
+    std::vector<GroupeEtudiant> listeG = GroupeEtudiant::readFromJSON(m_dataPath + "groupes.json");
+
+    if (listeE.empty() || listeG.empty()) {
+        QMessageBox::warning(this, "Erreur", "Vous devez d'abord créer au moins un enseignant et un groupe pour pouvoir créer un ECUE.");
+        return;
+    }
+
+    // 2. Appel du contrôleur
+    Ecue* nouvelEcue = Controleur_ecue::creationEcue(listeE, listeG);
+
+    // 3. Sauvegarde
+    if (nouvelEcue != nullptr) {
+        QString fichierJson = m_dataPath + "ecue.json";
+        std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+        liste.push_back(*nouvelEcue);
+        Ecue::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "L'ECUE a été ajouté et sauvegardé.");
+        delete nouvelEcue;
+    }
+}
+
+void MainWindow::on_btnSupprimerEcue_clicked()
+{
+    QString fichierJson = m_dataPath + "ecue.json";
+    std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun ECUE à supprimer.");
+        return;
+    }
+
+    int index = Controleur_ecue::supprimerEcue(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Ecue::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "L'ECUE a été supprimé avec succès.");
+    }
+}
+
+void MainWindow::on_btnAfficherEcues_clicked()
+{
+    QString fichierJson = m_dataPath + "ecue.json";
+    std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Liste des ECUE", "Aucun ECUE n'est enregistré.");
+        return;
+    }
+
+    QString texteAffichage = "Voici la liste des ECUE :\n\n";
+    for (size_t i = 0; i < liste.size(); ++i) {
+        texteAffichage += QString::fromStdString(liste[i].to_string()) + "\n";
+    }
+
+    QMessageBox::information(this, "Liste des ECUE", texteAffichage);
 }

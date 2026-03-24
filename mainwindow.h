@@ -28,6 +28,10 @@ private slots:
     void on_btnAfficherSalles_clicked();
     void on_btnSupprimerSalle_clicked();
 
+    void on_btnAjouterEcue_clicked();
+    void on_btnSupprimerEcue_clicked();
+    void on_btnAfficherEcues_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString m_dataPath;

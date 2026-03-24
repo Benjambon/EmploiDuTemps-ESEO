@@ -71,35 +71,24 @@ void Ecue::setHeureRestante(int newHeureRestante)
 
 std::string Ecue::to_string() const
 {
-    std::string res = "";
+    std::string typeStr;
     switch(typeCours)
     {
-    case eTypeCours::CM:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : CM, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::TD:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TD, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::TP_INFO:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::TP_ELEC:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : TP_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::EXAMEN_EN_SALLE:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_EN_SALLE, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::EXAMEN_INFO:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_INFO, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::EXAMEN_ELEC:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : EXAMEN_ELEC, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
-    case eTypeCours::DEFAULT:
-    default:
-        res = "Enseignant : " + enseignant.toString() + ", Groupe étudiant : " + groupeEtudiant.toString() + ", Type de cours : NON DEFINI, Heure Total : " + std::to_string(heureTotal) + ", Heure restante : " + std::to_string(heureRestante);
-        break;
+    case eTypeCours::CM: typeStr = "CM"; break;
+    case eTypeCours::TD: typeStr = "TD"; break;
+    case eTypeCours::TP_INFO: typeStr = "TP Info"; break;
+    case eTypeCours::TP_ELEC: typeStr = "TP Elec"; break;
+    case eTypeCours::EXAMEN_EN_SALLE: typeStr = "Exam Salle"; break;
+    case eTypeCours::EXAMEN_INFO: typeStr = "Exam Info"; break;
+    case eTypeCours::EXAMEN_ELEC: typeStr = "Exam Elec"; break;
+    default: typeStr = "Inconnu"; break;
     }
+
+    std::string res = "[" + typeStr + "] "
+                      + groupeEtudiant.getNom()
+                      + " - Enseignant : " + enseignant.getNom()
+                      + " (" + std::to_string(heureRestante) + "h / " + std::to_string(heureTotal) + "h)";
+
     return res;
 }
 
