@@ -8,8 +8,8 @@ class Controleur_groupeetudiant
 public:
     Controleur_groupeetudiant();
 
-    // Méthode principale qui pilote la création
     static GroupeEtudiant* creationGroupe(void);
+    static int supprimerGroupe(const std::vector<GroupeEtudiant>& listeGroupes);
 };
 
 #endif // CONTROLEUR_GROUPEETUDIANT_H

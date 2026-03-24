@@ -20,7 +20,10 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     salle.cpp \
-    salledialog.cpp
+    salledialog.cpp \
+    supprimerenseignantdialog.cpp \
+    supprimergroupeetudiantdialog.cpp \
+    supprimersalledialog.cpp
 
 HEADERS += \
     controleur_enseignant.h \
@@ -33,7 +36,10 @@ HEADERS += \
     groupeetudiantdialog.h \
     mainwindow.h \
     salle.h \
-    salledialog.h
+    salledialog.h \
+    supprimerenseignantdialog.h \
+    supprimergroupeetudiantdialog.h \
+    supprimersalledialog.h
 
 FORMS += \
     mainwindow.ui

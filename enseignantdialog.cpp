@@ -14,7 +14,7 @@ void EnseignantDialog::init_components(void)
     this->editPrenom = new QLineEdit(this);
 
     this->editMail = new QLineEdit(this);
-    this->editMail->setPlaceholderText("Optionnel (généré auto si vide)");
+    this->editMail->setPlaceholderText("Optionnel");
 
     this->buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
 }

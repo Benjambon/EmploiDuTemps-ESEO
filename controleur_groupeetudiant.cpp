@@ -1,5 +1,6 @@
 #include "controleur_groupeetudiant.h"
 #include "groupeetudiantdialog.h"
+#include "supprimergroupeetudiantdialog.h"
 #include <QMessageBox>
 #include <QDebug>
 
@@ -40,4 +41,19 @@ GroupeEtudiant* Controleur_groupeetudiant::creationGroupe(void)
 
     // Sortie de la boucle : le nom est valide
     return new GroupeEtudiant(dialog.getNom());
+}
+
+int Controleur_groupeetudiant::supprimerGroupe(const std::vector<GroupeEtudiant>& listeGroupes)
+{
+    if (listeGroupes.empty()) {
+        return -1;
+    }
+
+    SupprimerGroupeEtudiantDialog dialog(listeGroupes, nullptr);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        return dialog.getSelectedIndex();
+    }
+
+    return -1;
 }

@@ -71,6 +71,25 @@ void MainWindow::on_btnAfficherEnseignants_clicked()
     QMessageBox::information(this, "Liste des enseignants", texteAffichage);
 }
 
+void MainWindow::on_btnSupprimerEnseignant_clicked()
+{
+    QString fichierJson = m_dataPath + "enseignants.json";
+    std::vector<Enseignant> liste = Enseignant::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun enseignant à supprimer.");
+        return;
+    }
+
+    int index = Controleur_enseignant::supprimerEnseignant(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Enseignant::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "L'enseignant a été supprimé avec succès.");
+    }
+}
+
 // --------------------------------------------------------
 // Gestion des Groupes d'Étudiants
 // --------------------------------------------------------
@@ -113,6 +132,25 @@ void MainWindow::on_btnAfficherGroupes_clicked()
     QMessageBox::information(this, "Liste des groupes", texteAffichage);
 }
 
+void MainWindow::on_btnSupprimerGroupe_clicked()
+{
+    QString fichierJson = m_dataPath + "groupes.json";
+    std::vector<GroupeEtudiant> liste = GroupeEtudiant::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun groupe à supprimer.");
+        return;
+    }
+
+    int index = Controleur_groupeetudiant::supprimerGroupe(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        GroupeEtudiant::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "Le groupe a été supprimé avec succès.");
+    }
+}
+
 // --------------------------------------------------------
 // Gestion des Salles
 // --------------------------------------------------------
@@ -153,4 +191,23 @@ void MainWindow::on_btnAfficherSalles_clicked()
     }
 
     QMessageBox::information(this, "Liste des salles", texteAffichage);
+}
+
+void MainWindow::on_btnSupprimerSalle_clicked()
+{
+    QString fichierJson = m_dataPath + "salles.json";
+    std::vector<Salle> liste = Salle::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucune salle à supprimer.");
+        return;
+    }
+
+    int index = Controleur_salle::supprimerSalle(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Salle::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "La salle a été supprimée avec succès.");
+    }
 }

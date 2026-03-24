@@ -10,6 +10,7 @@ public:
 
     // Méthode principale qui pilote la création
     static Salle* creationSalle(void);
+    static int supprimerSalle(const std::vector<Salle>& listeSalles);
 };
 
 #endif // CONTROLEUR_SALLE_H

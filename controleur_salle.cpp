@@ -1,5 +1,6 @@
 #include "controleur_salle.h"
 #include "salledialog.h"
+#include "supprimersalledialog.h"
 #include <QMessageBox>
 #include <QDebug>
 
@@ -58,4 +59,19 @@ Salle* Controleur_salle::creationSalle(void)
 
     // Sortie de la boucle : les données sont valides
     return new Salle(dialog.getNumero(), dialog.getTypeSalle());
+}
+
+int Controleur_salle::supprimerSalle(const std::vector<Salle>& listeSalles)
+{
+    if (listeSalles.empty()) {
+        return -1;
+    }
+
+    SupprimerSalleDialog dialog(listeSalles, nullptr);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        return dialog.getSelectedIndex();
+    }
+
+    return -1;
 }

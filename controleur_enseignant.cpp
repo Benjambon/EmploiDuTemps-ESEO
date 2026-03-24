@@ -1,7 +1,5 @@
 #include "controleur_enseignant.h"
-#include "enseignantdialog.h"
-#include <QMessageBox>
-#include <QDebug>
+
 
 Controleur_enseignant::Controleur_enseignant() {}
 
@@ -80,4 +78,19 @@ Enseignant* Controleur_enseignant::creationEnseignant(void)
     } else {
         return new Enseignant(nom, prenom, mail);
     }
+}
+
+int Controleur_enseignant::supprimerEnseignant(const std::vector<Enseignant>& listeEnseignants)
+{
+    if (listeEnseignants.empty()) {
+        return -1;
+    }
+
+    SupprimerEnseignantDialog dialog(listeEnseignants, nullptr);
+
+    if (dialog.exec() == QDialog::Accepted) {
+        return dialog.getSelectedIndex();
+    }
+
+    return -1;
 }
