@@ -10,6 +10,9 @@ EcueDialog::EcueDialog(const std::vector<Enseignant>& listE, const std::vector<G
 
 void EcueDialog::init_components(const std::vector<Enseignant>& listE, const std::vector<GroupeEtudiant>& listG)
 {
+    this->editNom = new QLineEdit(this);
+    this->editNom->setPlaceholderText("ex: Mathématiques");
+
     this->comboEnseignant = new QComboBox(this);
     for (size_t i = 0; i < listE.size(); ++i) {
         this->comboEnseignant->addItem(QString::fromStdString(listE[i].toString()), static_cast<int>(i));
@@ -20,20 +23,14 @@ void EcueDialog::init_components(const std::vector<Enseignant>& listE, const std
         this->comboGroupe->addItem(QString::fromStdString(listG[i].toString()), static_cast<int>(i));
     }
 
-    this->comboTypeCours = new QComboBox(this);
-    this->comboTypeCours->addItem("CM", static_cast<int>(eTypeCours::CM));
-    this->comboTypeCours->addItem("TD", static_cast<int>(eTypeCours::TD));
-    this->comboTypeCours->addItem("TP Informatique", static_cast<int>(eTypeCours::TP_INFO));
-    this->comboTypeCours->addItem("TP Electronique", static_cast<int>(eTypeCours::TP_ELEC));
-    this->comboTypeCours->addItem("Examen Salle", static_cast<int>(eTypeCours::EXAMEN_EN_SALLE));
-    this->comboTypeCours->addItem("Examen Info", static_cast<int>(eTypeCours::EXAMEN_INFO));
-    this->comboTypeCours->addItem("Examen Elec", static_cast<int>(eTypeCours::EXAMEN_ELEC));
+    // Création des compteurs d'heures (spinbox) avec une boucle
+    eTypeCours types[] = { eTypeCours::CM, eTypeCours::TD, eTypeCours::TP_INFO, eTypeCours::TP_ELEC, eTypeCours::EXAMEN_EN_SALLE, eTypeCours::EXAMEN_INFO, eTypeCours::EXAMEN_ELEC };
 
-    this->spinHeureTotal = new QSpinBox(this);
-    this->spinHeureTotal->setRange(1, 100);
-
-    this->spinHeureRestante = new QSpinBox(this);
-    this->spinHeureRestante->setRange(0, 100);
+    for (eTypeCours type : types) {
+        QSpinBox* spin = new QSpinBox(this);
+        spin->setRange(0, 100);
+        this->mapSpins[type] = spin;
+    }
 
     this->buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
 }
@@ -41,11 +38,21 @@ void EcueDialog::init_components(const std::vector<Enseignant>& listE, const std
 void EcueDialog::init_layout(void)
 {
     this->formlayout = new QFormLayout(this);
+    this->formlayout->addRow("Nom de l'ECUE :", this->editNom);
     this->formlayout->addRow("Enseignant :", this->comboEnseignant);
     this->formlayout->addRow("Groupe :", this->comboGroupe);
-    this->formlayout->addRow("Type de cours :", this->comboTypeCours);
-    this->formlayout->addRow("Heures totales :", this->spinHeureTotal);
-    this->formlayout->addRow("Heures restantes :", this->spinHeureRestante);
+
+    QLabel* labelSep = new QLabel("<b>Heures à programmer :</b>", this);
+    this->formlayout->addRow(labelSep);
+
+    this->formlayout->addRow("CM :", this->mapSpins[eTypeCours::CM]);
+    this->formlayout->addRow("TD :", this->mapSpins[eTypeCours::TD]);
+    this->formlayout->addRow("TP Info :", this->mapSpins[eTypeCours::TP_INFO]);
+    this->formlayout->addRow("TP Elec :", this->mapSpins[eTypeCours::TP_ELEC]);
+    this->formlayout->addRow("Exam Salle :", this->mapSpins[eTypeCours::EXAMEN_EN_SALLE]);
+    this->formlayout->addRow("Exam Info :", this->mapSpins[eTypeCours::EXAMEN_INFO]);
+    this->formlayout->addRow("Exam Elec :", this->mapSpins[eTypeCours::EXAMEN_ELEC]);
+
     this->formlayout->addRow(this->buttonBox);
 }
 
@@ -55,8 +62,18 @@ void EcueDialog::init_slots(void)
     connect(this->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
+std::string EcueDialog::getNom(void) const { return this->editNom->text().toStdString(); }
 int EcueDialog::getEnseignantIndex(void) const { return this->comboEnseignant->currentData().toInt(); }
 int EcueDialog::getGroupeIndex(void) const { return this->comboGroupe->currentData().toInt(); }
-eTypeCours EcueDialog::getTypeCours(void) const { return static_cast<eTypeCours>(this->comboTypeCours->currentData().toInt()); }
-int EcueDialog::getHeureTotal(void) const { return this->spinHeureTotal->value(); }
-int EcueDialog::getHeureRestante(void) const { return this->spinHeureRestante->value(); }
+
+std::map<eTypeCours, int> EcueDialog::getHeuresChoisies(void) const
+{
+    std::map<eTypeCours, int> heures;
+    // On ne récupère que les types de cours où l'utilisateur a mis des heures > 0
+    for (auto const& pair : mapSpins) {
+        if (pair.second->value() > 0) {
+            heures[pair.first] = pair.second->value();
+        }
+    }
+    return heures;
+}

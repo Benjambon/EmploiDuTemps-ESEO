@@ -269,10 +269,43 @@ void MainWindow::on_btnAfficherEcues_clicked()
         return;
     }
 
-    QString texteAffichage = "Voici la liste des ECUE :\n\n";
+    QString texteAffichage = "<h3>Liste des ECUE</h3>";
+    texteAffichage += "<table border='1' cellspacing='0' cellpadding='5' style='border-collapse: collapse;'>";
+    texteAffichage += "<tr bgcolor='#f0f0f0'>";
+    texteAffichage += "<th>Nom</th><th>Groupe</th><th>Enseignant</th><th>Détail des heures (Rest. / Tot.)</th>";
+    texteAffichage += "</tr>";
+
     for (size_t i = 0; i < liste.size(); ++i) {
-        texteAffichage += QString::fromStdString(liste[i].to_string()) + "\n";
+        QString nom = QString::fromStdString(liste[i].getNom());
+        QString groupe = QString::fromStdString(liste[i].getGroupeEtudiant().getNom());
+        QString prof = QString::fromStdString(liste[i].getEnseignant().getNom());
+
+        // Création de la chaîne de détail des heures
+        QString heuresStr = "";
+        std::map<eTypeCours, int> totales = liste[i].getHeuresTotales();
+        std::map<eTypeCours, int> restantes = liste[i].getHeuresRestantes();
+
+        for (auto const& pair : totales) {
+            QString typeNom = Ecue::typeCoursToString(pair.first);
+            QString total = QString::number(pair.second);
+            QString restant = QString::number(restantes[pair.first]);
+
+            heuresStr += "<b>" + typeNom + "</b> : " + restant + "h / " + total + "h<br>";
+        }
+
+        texteAffichage += "<tr>";
+        texteAffichage += "<td>" + nom + "</td>";
+        texteAffichage += "<td>" + groupe + "</td>";
+        texteAffichage += "<td>" + prof + "</td>";
+        texteAffichage += "<td>" + heuresStr + "</td>";
+        texteAffichage += "</tr>";
     }
 
-    QMessageBox::information(this, "Liste des ECUE", texteAffichage);
+    texteAffichage += "</table>";
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Liste des ECUE");
+    msgBox.setText(texteAffichage);
+    msgBox.setTextFormat(Qt::RichText);
+    msgBox.exec();
 }

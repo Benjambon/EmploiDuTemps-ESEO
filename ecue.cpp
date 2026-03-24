@@ -1,264 +1,138 @@
 #include "ecue.h"
+#include <QDebug>
 
-Ecue::Ecue()
-{
-    this->enseignant = Enseignant();
-    this->groupeEtudiant = GroupeEtudiant();
-    this->typeCours = eTypeCours::DEFAULT;
-    this->heureTotal = 0;
-    this->heureRestante = 0;
-}
+Ecue::Ecue() {}
 
-Ecue::Ecue(Enseignant enseignant, GroupeEtudiant groupeEtudiant, eTypeCours typeCours, int heureTotal, int heureRestante)
+Ecue::Ecue(std::string nom, Enseignant enseignant, GroupeEtudiant groupeEtudiant, std::map<eTypeCours, int> heuresTotales)
 {
+    this->nom = nom;
     this->enseignant = enseignant;
     this->groupeEtudiant = groupeEtudiant;
-    this->typeCours = typeCours;
-    this->heureTotal = heureTotal;
-    this->heureRestante = heureRestante;
+    this->heuresTotales = heuresTotales;
+    this->heuresRestantes = heuresTotales; // Initialisation automatique des heures restantes
 }
 
+std::string Ecue::getNom() const { return nom; }
+Enseignant Ecue::getEnseignant() const { return enseignant; }
+GroupeEtudiant Ecue::getGroupeEtudiant() const { return groupeEtudiant; }
+std::map<eTypeCours, int> Ecue::getHeuresTotales() const { return heuresTotales; }
+std::map<eTypeCours, int> Ecue::getHeuresRestantes() const { return heuresRestantes; }
 
-Enseignant Ecue::getEnseignant() const
+QString Ecue::typeCoursToString(eTypeCours type)
 {
-    return enseignant;
+    switch(type) {
+    case eTypeCours::CM: return "CM";
+    case eTypeCours::TD: return "TD";
+    case eTypeCours::TP_INFO: return "TP_INFO";
+    case eTypeCours::TP_ELEC: return "TP_ELEC";
+    case eTypeCours::EXAMEN_EN_SALLE: return "EXAMEN_EN_SALLE";
+    case eTypeCours::EXAMEN_INFO: return "EXAMEN_INFO";
+    case eTypeCours::EXAMEN_ELEC: return "EXAMEN_ELEC";
+    default: return "DEFAULT";
+    }
 }
 
-void Ecue::setEnseignant(const Enseignant &newEnseignant)
+eTypeCours Ecue::stringToTypeCours(QString str)
 {
-    enseignant = newEnseignant;
-}
-
-GroupeEtudiant Ecue::getGroupeEtudiant() const
-{
-    return groupeEtudiant;
-}
-
-void Ecue::setGroupeEtudiant(const GroupeEtudiant &newGroupeEtudiant)
-{
-    groupeEtudiant = newGroupeEtudiant;
-}
-
-eTypeCours Ecue::gettypeCours() const
-{
-    return typeCours;
-}
-
-void Ecue::settypeCours(eTypeCours newTCours)
-{
-    typeCours = newTCours;
-}
-
-int Ecue::getHeureTotal() const
-{
-    return heureTotal;
-}
-
-void Ecue::setHeureTotal(int newHeureTotal)
-{
-    heureTotal = newHeureTotal;
-}
-
-int Ecue::getHeureRestante() const
-{
-    return heureRestante;
-}
-
-void Ecue::setHeureRestante(int newHeureRestante)
-{
-    heureRestante = newHeureRestante;
+    if (str == "CM") return eTypeCours::CM;
+    if (str == "TD") return eTypeCours::TD;
+    if (str == "TP_INFO") return eTypeCours::TP_INFO;
+    if (str == "TP_ELEC") return eTypeCours::TP_ELEC;
+    if (str == "EXAMEN_EN_SALLE") return eTypeCours::EXAMEN_EN_SALLE;
+    if (str == "EXAMEN_INFO") return eTypeCours::EXAMEN_INFO;
+    if (str == "EXAMEN_ELEC") return eTypeCours::EXAMEN_ELEC;
+    return eTypeCours::DEFAULT;
 }
 
 std::string Ecue::to_string() const
 {
-    std::string typeStr;
-    switch(typeCours)
-    {
-    case eTypeCours::CM: typeStr = "CM"; break;
-    case eTypeCours::TD: typeStr = "TD"; break;
-    case eTypeCours::TP_INFO: typeStr = "TP Info"; break;
-    case eTypeCours::TP_ELEC: typeStr = "TP Elec"; break;
-    case eTypeCours::EXAMEN_EN_SALLE: typeStr = "Exam Salle"; break;
-    case eTypeCours::EXAMEN_INFO: typeStr = "Exam Info"; break;
-    case eTypeCours::EXAMEN_ELEC: typeStr = "Exam Elec"; break;
-    default: typeStr = "Inconnu"; break;
-    }
-
-    std::string res = "[" + typeStr + "] "
-                      + groupeEtudiant.getNom()
-                      + " - Enseignant : " + enseignant.getNom()
-                      + " (" + std::to_string(heureRestante) + "h / " + std::to_string(heureTotal) + "h)";
-
+    std::string res = "[" + nom + "] " + groupeEtudiant.getNom() + " - Enseignant : " + enseignant.getNom();
     return res;
-}
-
-Ecue::code_erreur_typeCours Ecue::isTypeCoursValid(const eTypeCours& typeCours)
-{
-    if(typeCours == eTypeCours::DEFAULT) { return Ecue::TYPECOURS_NONDEFINIT; }
-    return code_erreur_typeCours::TYPECOURS_OK;
-}
-
-
-Ecue::code_erreur_heureTotal Ecue::isHeureTotalValid(const int& heureTotal)
-{
-    if(heureTotal == 0) { return Ecue::HEURETOTAL_NUL; }
-    if(heureTotal < 0) { return Ecue::HEURETOTAL_NEGATIF; }
-    if(heureTotal % 2) { return Ecue::HEURETOTAL_IMPAIR; }
-    return Ecue::HEURETOTAL_OK;
-}
-
-Ecue::code_erreur_heureRestante Ecue::isHeureRestanteValid(const int& heureRestante)
-{
-    if(heureRestante == 0) { return Ecue::HEURERESTANTE_NUL; }
-    if(heureRestante < 0) { return Ecue::HEURERESTANTE_NEGATIF; }
-    if(heureRestante % 2) { return Ecue::HEURERESTANTE_IMPAIR; }
-    if(heureRestante > this->heureTotal) { return Ecue::HEURERESTANTE_SUPERIEUR_TOTAL; }
-    return Ecue::HEURERESTANTE_OK;
 }
 
 QJsonObject Ecue::toJSON(void) const
 {
     QJsonObject json;
+    json["Nom"] = QString::fromStdString(this->nom);
     json["Enseignant"] = this->enseignant.toJSON();
     json["GroupeEtudiant"] = this->groupeEtudiant.toJSON();
 
-    switch(typeCours)
-    {
-    case eTypeCours::CM:
-        json["TypeCours"] = QString::fromStdString("CM");
-        break;
-    case eTypeCours::TD:
-        json["TypeCours"] = QString::fromStdString("TD");
-        break;
-    case eTypeCours::TP_INFO:
-        json["TypeCours"] = QString::fromStdString("TP_INFO");
-        break;
-    case eTypeCours::TP_ELEC:
-        json["TypeCours"] = QString::fromStdString("TP_ELEC");
-        break;
-    case eTypeCours::EXAMEN_EN_SALLE:
-        json["TypeCours"] = QString::fromStdString("EXAMEN_EN_SALLE");
-        break;
-    case eTypeCours::EXAMEN_INFO:
-        json["TypeCours"] = QString::fromStdString("EXAMEN_INFO");
-        break;
-    case eTypeCours::EXAMEN_ELEC:
-        json["TypeCours"] = QString::fromStdString("EXAMEN_ELEC");
-        break;
-    case eTypeCours::DEFAULT:
-    default:
-        json["TypeCours"] = QString::fromStdString("DEFAULT");
-        break;
+    QJsonObject hTot, hRest;
+    for (auto const& pair : heuresTotales) {
+        hTot[typeCoursToString(pair.first)] = pair.second;
+    }
+    for (auto const& pair : heuresRestantes) {
+        hRest[typeCoursToString(pair.first)] = pair.second;
     }
 
-    json["HeureTotal"] = this->heureTotal;
-    json["HeureRestante"] = this->heureRestante;
+    json["HeuresTotales"] = hTot;
+    json["HeuresRestantes"] = hRest;
     return json;
 }
 
-Ecue Ecue::fromJSON(QJsonObject json){
-    QJsonObject::iterator it;
-    QJsonObject obj;
+Ecue Ecue::fromJSON(QJsonObject json)
+{
+    std::string sNom = json["Nom"].toString().toStdString();
+    Enseignant ens = Enseignant::fromJSON(json["Enseignant"].toObject());
+    GroupeEtudiant grp = GroupeEtudiant::fromJSON(json["GroupeEtudiant"].toObject());
 
-    it = json.find("Enseignant");
-    if (it==json.end()) { qDebug() << "Le JSON ne contient pas de 'Enseignant'";}
-    if (it.value().isNull() || it.value().isObject() ) { qDebug() << "Le 'Enseignant' est null" ;}
+    std::map<eTypeCours, int> mapTotales;
+    std::map<eTypeCours, int> mapRestantes;
 
-    QJsonObject JOEnseignant = it.value().toObject();
-
-    it = JOEnseignant.find("prenom");
-    if (it==JOEnseignant.end()) { qDebug() << "Le JSON Enseignant ne contient pas de 'prenom";}
-    if (it.value().isNull() ) { qDebug() << "Le 'prenom' de Enseignant est null" ;}
-    std::string sPrenomEnseignant = it.value().toString().toStdString() ;
-
-    it = JOEnseignant.find("nom");
-    if (it==JOEnseignant.end()) { qDebug() << "Le JSON Enseignant ne contient pas de 'nom";}
-    if (it.value().isNull() ) { qDebug() << "Le 'nom' de Enseignant est null" ;}
-    std::string sNomEnseignant = it.value().toString().toStdString() ;
-
-    it = JOEnseignant.find("mail");
-    if (it==JOEnseignant.end() ) { qDebug() << "Le JSON Enseignant ne contient pas de 'mail";}
-    if (it.value().isNull() ) { qDebug() << "Le 'mail' de Enseignant est null" ;}
-    std::string sMailEnseignant = it.value().toString().toStdString() ;
-
-    it = json.find("GroupeEtudiant");
-    if (it==json.end()) { qDebug() << "Le JSON ne contient pas de 'GroupeEtudiant'";}
-    if (it.value().isNull() || it.value().isObject()) { qDebug() << "Le 'GroupeEtudiant' est null" ;}
-
-    QJsonObject OJGroupeEtudiant = it.value().toObject();
-
-    it = OJGroupeEtudiant.find("nom");
-    if (it==OJGroupeEtudiant.end()) { qDebug() << "Le JSON GroupeEtudiant ne contient pas de 'nom'";}
-    if (it.value().isNull() ) { qDebug() << "Le 'nom' de GroupeEtudiant est null" ;}
-    std::string sNomGroupeEtudiant = it.value().toString().toStdString() ;
-
-    it = json.find("TypeCours");
-    if (it==json.end() ) { qDebug() << "Le JSON ne contient pas de 'TypeCours'";}
-    if (it.value().isNull() ) { qDebug() << "Le 'TypeCours' est null" ;}
-    std::string sTypeCours = it.value().toString().toStdString();
-
-    it = json.find("HeureTotal");
-    if (it==json.end() ) { qDebug() << "Le JSON ne contient pas de 'HeureTotal'";}
-    if (it.value().isNull() ) { qDebug() << "Le 'HeureTotal' est null" ;}
-    int iHeureTotal = it.value().toInt();
-
-    it = json.find("HeureRestante");
-    if (it==json.end() ) { qDebug() << "Le JSON ne contient pas de 'HeureRestante'";}
-    if (it.value().isNull() ) { qDebug() << "Le 'HeureRestante' est null" ;}
-    int iHeureRestante = it.value().toInt();
-
-    if(sTypeCours == "CM"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::CM, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "TD"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::TD, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "TP_INFO"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::TP_INFO, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "TP_ELEC"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::TP_ELEC, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "EXAMEN_EN_SALLE"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_EN_SALLE, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "EXAMEN_INFO"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_INFO, iHeureTotal, iHeureRestante);
-    }else if(sTypeCours == "EXAMEN_ELEC"){
-        return Ecue(Enseignant(sPrenomEnseignant, sNomEnseignant, sMailEnseignant), GroupeEtudiant(sNomGroupeEtudiant), eTypeCours::EXAMEN_ELEC, iHeureTotal, iHeureRestante);
+    QJsonObject hTot = json["HeuresTotales"].toObject();
+    for (const QString& key : hTot.keys()) {
+        mapTotales[stringToTypeCours(key)] = hTot[key].toInt();
     }
-    return Ecue();
+
+    QJsonObject hRest = json["HeuresRestantes"].toObject();
+    for (const QString& key : hRest.keys()) {
+        mapRestantes[stringToTypeCours(key)] = hRest[key].toInt();
+    }
+
+    Ecue ecueObj(sNom, ens, grp, mapTotales);
+    ecueObj.heuresRestantes = mapRestantes;
+    return ecueObj;
 }
 
 void Ecue::writeToJSON(std::vector<Ecue> vector, QString filepath){
     QFile file (filepath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        qDebug() << "Erreur ouverture de";
-        qDebug() << filepath.toStdString();
-    }
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) return;
     QJsonArray tab;
-    for (auto it =vector.begin(); it != vector.end(); it++)
-    {
-        tab.append(it->toJSON());
-    }
+    for (auto it =vector.begin(); it != vector.end(); it++) { tab.append(it->toJSON()); }
     file.write(QJsonDocument(tab).toJson(QJsonDocument::Indented));
     file.close();
 }
 
 std::vector<Ecue> Ecue::readFromJSON(QString filepath){
     QFile file (filepath);
-    if (!file.open(QIODevice::ReadOnly)){
-        qDebug() << "Erreur ouverture de";
-        qDebug() << filepath.toStdString();
-        return std::vector<Ecue>();
-    }
+    if (!file.open(QIODevice::ReadOnly)) return std::vector<Ecue>();
     QByteArray data = file.readAll();
     file.close();
     QJsonDocument doc = QJsonDocument::fromJson(data);
-    if(!doc.isArray()){
-        qDebug() << "Erreur ouverture de";
-        qDebug() << filepath;
-        return std::vector<Ecue>();
-    }
-    QJsonArray tab =doc.array();
+    QJsonArray tab = doc.array();
     std::vector<Ecue> res;
-    for (auto it = tab.begin(); it != tab.end();it++){
-        res.push_back(Ecue::fromJSON((*it).toObject()));
-    }
+    for (auto it = tab.begin(); it != tab.end();it++) { res.push_back(Ecue::fromJSON((*it).toObject())); }
     return res;
+}
+Ecue::code_erreur_nom Ecue::isNomValid(const std::string& nomTest)
+{
+    if(nomTest.empty()) { return Ecue::NOM_VIDE; }
+    return Ecue::NOM_OK;
+}
+
+Ecue::code_erreur_heureTotal Ecue::isHeureTotalValid(int heureTotalTest)
+{
+    if(heureTotalTest == 0) { return Ecue::HEURETOTAL_NUL; }
+    if(heureTotalTest < 0) { return Ecue::HEURETOTAL_NEGATIF; }
+    if(heureTotalTest % 2 != 0) { return Ecue::HEURETOTAL_IMPAIR; }
+    return Ecue::HEURETOTAL_OK;
+}
+
+Ecue::code_erreur_heureRestante Ecue::isHeureRestanteValid(int heureRestanteTest, int heureTotalAssociee)
+{
+    if(heureRestanteTest == 0) { return Ecue::HEURERESTANTE_NUL; }
+    if(heureRestanteTest < 0) { return Ecue::HEURERESTANTE_NEGATIF; }
+    if(heureRestanteTest % 2 != 0) { return Ecue::HEURERESTANTE_IMPAIR; }
+    if(heureRestanteTest > heureTotalAssociee) { return Ecue::HEURERESTANTE_SUPERIEUR_TOTAL; }
+    return Ecue::HEURERESTANTE_OK;
 }

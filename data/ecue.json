@@ -1,2 +1,19 @@
 [
+    {
+        "Enseignant": {
+            "mail": "vincent.trenchant@eseo.fr",
+            "nom": "vincent",
+            "prenom": "trenchant"
+        },
+        "GroupeEtudiant": {
+            "nom": "E4"
+        },
+        "HeuresRestantes": {
+            "CM": 2
+        },
+        "HeuresTotales": {
+            "CM": 2
+        },
+        "Nom": "math"
+    }
 ]

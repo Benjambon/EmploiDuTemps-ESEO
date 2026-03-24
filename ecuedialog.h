@@ -4,9 +4,12 @@
 #include <QDialog>
 #include <QComboBox>
 #include <QSpinBox>
+#include <QLineEdit>
 #include <QDialogButtonBox>
 #include <QFormLayout>
+#include <QLabel>
 #include <vector>
+#include <map>
 #include "enseignant.h"
 #include "groupeetudiant.h"
 #include "ecue.h"
@@ -16,11 +19,10 @@ class EcueDialog : public QDialog
     Q_OBJECT
 
 private:
+    QLineEdit* editNom;
     QComboBox* comboEnseignant;
     QComboBox* comboGroupe;
-    QComboBox* comboTypeCours;
-    QSpinBox* spinHeureTotal;
-    QSpinBox* spinHeureRestante;
+    std::map<eTypeCours, QSpinBox*> mapSpins;
     QDialogButtonBox* buttonBox;
     QFormLayout* formlayout;
 
@@ -31,11 +33,10 @@ private:
 public:
     EcueDialog(const std::vector<Enseignant>& listE, const std::vector<GroupeEtudiant>& listG, QWidget *parent = nullptr);
 
+    std::string getNom(void) const;
     int getEnseignantIndex(void) const;
     int getGroupeIndex(void) const;
-    eTypeCours getTypeCours(void) const;
-    int getHeureTotal(void) const;
-    int getHeureRestante(void) const;
+    std::map<eTypeCours, int> getHeuresChoisies(void) const;
 };
 
 #endif // ECUEDIALOG_H

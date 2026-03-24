@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>711</width>
-      <height>601</height>
+      <height>611</height>
      </rect>
     </property>
     <property name="currentIndex">
@@ -38,162 +38,92 @@
      <attribute name="title">
       <string>Tab 2</string>
      </attribute>
-     <widget class="QPushButton" name="btnAjouterEnseignant">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>122</y>
-        <width>134</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Ajouter Enseignant</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnSupprimerEnseignant">
-      <property name="geometry">
-       <rect>
-        <x>241</x>
-        <y>122</y>
-        <width>154</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Supprimer Enseignant</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAfficherEnseignants">
-      <property name="geometry">
-       <rect>
-        <x>471</x>
-        <y>122</y>
-        <width>137</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Afficher Enseignant</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAjouterGroupe">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>269</y>
-        <width>111</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Ajouter Groupe</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnSupprimerGroupe">
-      <property name="geometry">
-       <rect>
-        <x>241</x>
-        <y>269</y>
-        <width>131</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Supprimer Groupe</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAfficherGroupes">
-      <property name="geometry">
-       <rect>
-        <x>471</x>
-        <y>269</y>
-        <width>114</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Afficher Groupe</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAjouterSalle">
-      <property name="geometry">
-       <rect>
-        <x>11</x>
-        <y>416</y>
-        <width>94</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Ajouter Salle</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnSupprimerSalle">
-      <property name="geometry">
-       <rect>
-        <x>241</x>
-        <y>416</y>
-        <width>114</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Supprimer Salle</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAfficherSalles">
-      <property name="geometry">
-       <rect>
-        <x>471</x>
-        <y>416</y>
-        <width>97</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Afficher Salle</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAjouterEcue">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>480</y>
-        <width>111</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Ajouter ECUE</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnSupprimerEcue">
-      <property name="geometry">
-       <rect>
-        <x>250</x>
-        <y>480</y>
-        <width>151</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Supprimer ECUE</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnAfficherEcues">
-      <property name="geometry">
-       <rect>
-        <x>470</x>
-        <y>480</y>
-        <width>131</width>
-        <height>29</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Afficher ECUE</string>
-      </property>
-     </widget>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="btnAjouterEnseignant">
+        <property name="text">
+         <string>Ajouter Enseignant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="btnSupprimerEnseignant">
+        <property name="text">
+         <string>Supprimer Enseignant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="btnAfficherEnseignants">
+        <property name="text">
+         <string>Afficher Enseignant</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="btnAjouterGroupe">
+        <property name="text">
+         <string>Ajouter Groupe</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="btnSupprimerGroupe">
+        <property name="text">
+         <string>Supprimer Groupe</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="btnAfficherGroupes">
+        <property name="text">
+         <string>Afficher Groupe</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="btnAjouterSalle">
+        <property name="text">
+         <string>Ajouter Salle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="btnSupprimerSalle">
+        <property name="text">
+         <string>Supprimer Salle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QPushButton" name="btnAfficherSalles">
+        <property name="text">
+         <string>Afficher Salle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="btnAjouterEcue">
+        <property name="text">
+         <string>Ajouter ECUE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="btnSupprimerEcue">
+        <property name="text">
+         <string>Supprimer ECUE</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QPushButton" name="btnAfficherEcues">
+        <property name="text">
+         <string>Afficher ECUE</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
   </widget>

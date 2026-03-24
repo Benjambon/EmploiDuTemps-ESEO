@@ -8,41 +8,33 @@ Controleur_ecue::Controleur_ecue() {}
 
 Ecue* Controleur_ecue::creationEcue(const std::vector<Enseignant>& listE, const std::vector<GroupeEtudiant>& listG)
 {
-    // Sécurité si aucune donnée n'existe pour créer un ECUE
-    if (listE.empty() || listG.empty()) {
-        return nullptr;
-    }
+    if (listE.empty() || listG.empty()) return nullptr;
 
     EcueDialog dialog(listE, listG, nullptr);
 
-    // Initialisation pour forcer la boucle
-    Ecue::code_erreur_heureRestante err_hr = Ecue::HEURERESTANTE_SUPERIEUR_TOTAL;
+    bool isValid = false;
 
-    while (!(err_hr == Ecue::HEURERESTANTE_OK || err_hr == Ecue::HEURERESTANTE_NUL || err_hr == Ecue::HEURERESTANTE_IMPAIR))
+    while (!isValid)
     {
-        dialog.show();
         if (dialog.exec() == QDialog::Rejected) {
             return nullptr;
         }
 
-        Enseignant prof = listE[dialog.getEnseignantIndex()];
-        GroupeEtudiant groupe = listG[dialog.getGroupeIndex()];
-        eTypeCours type = dialog.getTypeCours();
-        int total = dialog.getHeureTotal();
-        int restante = dialog.getHeureRestante();
+        std::string nom = dialog.getNom();
+        std::map<eTypeCours, int> heures = dialog.getHeuresChoisies();
 
-        Ecue tempEcue(prof, groupe, type, total, restante);
-
-        err_hr = tempEcue.isHeureRestanteValid(restante);
-
-        if (err_hr == Ecue::HEURERESTANTE_SUPERIEUR_TOTAL) {
-            QMessageBox::warning(&dialog, "Erreur", "Les heures restantes ne peuvent pas être supérieures aux heures totales.");
-        } else if (err_hr == Ecue::HEURERESTANTE_NEGATIF) {
-            QMessageBox::warning(&dialog, "Erreur", "Les heures restantes ne peuvent pas être négatives.");
+        if (nom.empty()) {
+            QMessageBox::warning(&dialog, "Erreur", "Le nom de l'ECUE ne peut pas être vide.");
+        } else if (heures.empty()) {
+            QMessageBox::warning(&dialog, "Erreur", "Vous devez définir au moins 1 heure pour un type de cours.");
+        } else {
+            isValid = true;
+            Enseignant prof = listE[dialog.getEnseignantIndex()];
+            GroupeEtudiant groupe = listG[dialog.getGroupeIndex()];
+            return new Ecue(nom, prof, groupe, heures);
         }
     }
-
-    return new Ecue(listE[dialog.getEnseignantIndex()], listG[dialog.getGroupeIndex()], dialog.getTypeCours(), dialog.getHeureTotal(), dialog.getHeureRestante());
+    return nullptr;
 }
 
 int Controleur_ecue::supprimerEcue(const std::vector<Ecue>& listeEcues)
