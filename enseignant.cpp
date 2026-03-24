@@ -1,5 +1,5 @@
 #include "enseignant.h"
-
+#include <cctype>
 
 //Getter Setter
 std::string Enseignant::getNom() const
@@ -47,41 +47,49 @@ Enseignant::Enseignant(const std::string &nom, const std::string &prenom) : nom(
     mail(prenom+"."+nom+"@eseo.fr")
 {}
 
-bool Enseignant::isMailValid(void)
+Enseignant::code_erreur_mail Enseignant::isMailValid(void)
 {
+    const std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
 
-    // Regular expression definition
-    const std::regex pattern(
-        "(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
-
-    // Match the string pattern
-    // with regular expression
-    return regex_match(this->getMail(), pattern);
+    if (regex_match(this->getMail(), pattern)) {
+        return Enseignant::MAIL_OK;
+    } else {
+        return Enseignant::MAIL_SYNTAXE;
+    }
 }
 
-bool Enseignant::isNomValid(void){
-    if(this->getNom()==""){
-        return false;
-    }
-    else{
-        return true;
+Enseignant::code_erreur_nom Enseignant::isNomValid(void){
+    std::string n = this->getNom();
+
+    if(n == ""){
+        return Enseignant::NOM_VIDE;
     }
 
+    for (char c : n) {
+        if (::isdigit(c)) {
+            return Enseignant::NOM_CHIFFRE;
+        }
+    }
+
+    return Enseignant::NOM_OK;
 }
 
-bool Enseignant::isPrenomValid(void){
-    if(this->getPrenom()==""){
-        return false;
-    }
-    else{
-        return true;
+Enseignant::code_erreur_prenom Enseignant::isPrenomValid(void){
+    std::string p = this->getPrenom();
+
+    if(p == ""){
+        return Enseignant::PRENOM_VIDE;
     }
 
+    for (char c : p) {
+        if (::isdigit(c)) {
+            return Enseignant::PRENOM_CHIFFRE;
+        }
+    }
+
+    return Enseignant::PRENOM_OK;
 }
 
-bool Enseignant::isEnseignantValid(void) {
-    return isMailValid() && isNomValid() && isPrenomValid();
-}
 
 std::string Enseignant::toString(void) const{
     std::string res= nom + " " + prenom +" "+ mail;
