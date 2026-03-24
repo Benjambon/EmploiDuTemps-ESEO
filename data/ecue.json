@@ -2,8 +2,8 @@
     {
         "Enseignant": {
             "mail": "vincent.trenchant@eseo.fr",
-            "nom": "trenchant",
-            "prenom": "vincent"
+            "nom": "vincent",
+            "prenom": "trenchant"
         },
         "GroupeEtudiant": {
             "nom": "E4"
@@ -15,5 +15,26 @@
             "CM": 4
         },
         "Nom": "Math2"
+    },
+    {
+        "Enseignant": {
+            "mail": "vincent.trenchant@eseo.fr",
+            "nom": "vincent",
+            "prenom": "trenchant"
+        },
+        "GroupeEtudiant": {
+            "nom": "E4"
+        },
+        "HeuresRestantes": {
+            "CM": 8,
+            "EXAMEN_EN_SALLE": 2,
+            "TD": 6
+        },
+        "HeuresTotales": {
+            "CM": 8,
+            "EXAMEN_EN_SALLE": 2,
+            "TD": 6
+        },
+        "Nom": "Signaux et Systemes"
     }
 ]
