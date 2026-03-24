@@ -9,6 +9,10 @@ MainWindow::MainWindow(QString dataPath, QWidget *parent)
     ui->setupUi(this);
     this->init_style();
     this->init_layout();
+    ui->tabWidget->setTabText(0, "Emploi du temps");
+    QVBoxLayout* tabLayout = new QVBoxLayout(ui->tab);
+    EmploiDuTempsDialog* edtDialog = new EmploiDuTempsDialog(m_dataPath, this);
+    tabLayout->addWidget(edtDialog);
 }
 
 MainWindow::~MainWindow()
