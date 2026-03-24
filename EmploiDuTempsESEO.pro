@@ -56,4 +56,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    .gitignore
+    .gitignore \
+    styles/styles.qss \
+    styles/styles.qss.txt
+
+RESOURCES += \
+    ressource.qrc \
+    ressources.qrc
