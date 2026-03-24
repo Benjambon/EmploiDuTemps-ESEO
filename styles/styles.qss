@@ -1,4 +1,6 @@
-/* Arrière-plan général et typographie */
+/* ========================================================= */
+/* --- Arrière-plan général et typographie --- */
+/* ========================================================= */
 QWidget {
     background-color: #F5F7FA;
     font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
@@ -6,13 +8,15 @@ QWidget {
     color: #2C3E50;
 }
 
-/* Boutons d'action */
+/* ========================================================= */
+/* --- Boutons d'action --- */
+/* ========================================================= */
 QPushButton {
     background-color: #3498DB;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 8px 20px;
+    padding: 8px 20px; /* Marge horizontale augmentée pour éviter le texte coupé */
     min-width: 120px;
     font-weight: bold;
 }
@@ -30,12 +34,90 @@ QPushButton:disabled {
     color: #ECF0F1;
 }
 
-/* Conteneurs (Groupes) */
+/* ========================================================= */
+/* --- Boutons Radio (QRadioButton) --- */
+/* ========================================================= */
+QRadioButton {
+    /* CORRECTION 1 : Plus d'espace entre l'indicateur et le texte */
+    spacing: 12px;
+    color: #2C3E50;
+    font-weight: bold;
+    /* CORRECTION 2 : Marge de respiration pour le texte lui-même */
+    padding-right: 20px;
+}
+
+/* Le cercle par défaut (décoché) */
+QRadioButton::indicator {
+    width: 18px; /* Taille de l'indicateur */
+    height: 18px;
+    /* CORRECTION 3 : Rend le carré parfaitement rond (la moitié de la taille) */
+    border-radius: 9px;
+    border: 2px solid #BDC3C7;
+    background-color: #FFFFFF;
+}
+
+/* Survol de la souris */
+QRadioButton::indicator:hover {
+    border: 2px solid #3498DB;
+}
+
+/* L'état coché (Cercle bleu plein, comme l'image mais rond) */
+QRadioButton::indicator:checked {
+    background-color: #3498DB;
+    border: 2px solid #3498DB;
+}
+
+/* Les états désactivés */
+QRadioButton::disabled {
+    color: #BDC3C7;
+}
+
+QRadioButton::indicator:disabled {
+    border: 2px solid #E0E4E8;
+    background-color: #F9FAFC;
+}
+
+/* ========================================================= */
+/* --- Système d'onglets (QTabWidget et QTabBar) --- */
+/* ========================================================= */
+QTabWidget::pane {
+    border: 1px solid #dee2e6;
+    background-color: white;
+    border-radius: 6px;
+    margin-top: -1px; /* Colle l'onglet au panneau */
+}
+
+QTabBar::tab {
+    background-color: #e9ecef;
+    border: 1px solid #dee2e6;
+    border-bottom-color: transparent; /* Masque la bordure du bas pour le tab */
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    min-width: 100px;
+    padding: 8px 15px;
+    color: #495057;
+    font-weight: bold;
+}
+
+QTabBar::tab:selected {
+    background-color: white;
+    color: #2C3E50;
+    border-color: #dee2e6;
+    border-bottom-color: white; /* Recrée le lien visuel avec le panneau */
+}
+
+QTabBar::tab:hover:!selected {
+    background-color: #ced4da;
+}
+
+/* ========================================================= */
+/* --- Conteneurs (Groupes, QGroupBox) --- */
+/* ========================================================= */
 QGroupBox {
     font-weight: bold;
     border: 2px solid #BDC3C7;
     border-radius: 6px;
-    margin-top: 15px;
+    margin-top: 15px; /* Laisse de la place pour le titre */
     padding-top: 15px;
 }
 
@@ -47,7 +129,9 @@ QGroupBox::title {
     font-size: 14px;
 }
 
-/* Champs de texte, compteurs et listes déroulantes */
+/* ========================================================= */
+/* --- Champs de texte, compteurs et listes déroulantes --- */
+/* ========================================================= */
 QLineEdit, QSpinBox, QComboBox {
     background-color: #FFFFFF;
     border: 1px solid #BDC3C7;
@@ -59,7 +143,7 @@ QLineEdit, QSpinBox, QComboBox {
 
 QLineEdit:focus, QSpinBox:focus, QComboBox:focus {
     border: 2px solid #3498DB;
-    padding: 5px;
+    padding: 5px; /* Compense la bordure plus épaisse */
 }
 
 /* Style spécifique pour la flèche des listes déroulantes */
@@ -71,7 +155,9 @@ QComboBox::drop-down {
     border-bottom-right-radius: 4px;
 }
 
-/* Tableaux (Grille d'emploi du temps et listes) */
+/* ========================================================= */
+/* --- Tableaux (QTableView, QTableWidget) --- */
+/* ========================================================= */
 QTableView, QTableWidget {
     background-color: #FFFFFF;
     alternate-background-color: #F9FAFC;
@@ -92,7 +178,9 @@ QHeaderView::section {
     font-weight: bold;
 }
 
-/* Fenêtres pop-up (Boîtes de dialogue) */
+/* ========================================================= */
+/* --- Fenêtres pop-up (Boîtes de dialogue) --- */
+/* ========================================================= */
 QDialog {
     background-color: #FFFFFF;
 }

@@ -1,8 +1,8 @@
 [
     {
         "mail": "vincent.trenchant@eseo.fr",
-        "nom": "vincent",
-        "prenom": "trenchant"
+        "nom": "trenchant",
+        "prenom": "vincent"
     },
     {
         "mail": "qsd.qsd@eseo.fr",
@@ -11,7 +11,12 @@
     },
     {
         "mail": "lucas.morlet@reseau.eseo.fr",
-        "nom": "Morlet",
-        "prenom": "Lucas"
+        "nom": "Lucas",
+        "prenom": "Morlet"
+    },
+    {
+        "mail": "aaa.aaa@eseo.fr",
+        "nom": "aaa",
+        "prenom": "aaa"
     }
 ]

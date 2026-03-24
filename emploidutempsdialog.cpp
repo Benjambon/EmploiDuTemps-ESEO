@@ -52,6 +52,10 @@ void EmploiDuTempsDialog::init_components()
     itemPause->setBackground(QBrush(QColor(230, 230, 230)));
 
     QFont font = itemPause->font();
+    if (font.pointSize() <= 0) {
+        font.setPointSize(10);
+    }
+
     font.setItalic(true);
     itemPause->setFont(font);
 
