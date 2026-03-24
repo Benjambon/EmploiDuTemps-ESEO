@@ -10,12 +10,13 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include <QComboBox>
-
-// Inclusions pour la logique métier
 #include <vector>
 #include "enseignant.h"
 #include "groupeetudiant.h"
 #include "salle.h"
+#include "controleur_salle.h"
+#include "controleur_groupeetudiant.h"
+#include "controleur_enseignant.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -36,49 +37,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btnAjouterEnseignant_clicked()
 {
-    QDialog dialog(this);
-    dialog.setWindowTitle("Ajouter un enseignant");
+    // Appel du contrôleur
+    Enseignant* nouvelEnseignant = Controleur_enseignant::creationEnseignant();
 
-    QVBoxLayout *layoutMain = new QVBoxLayout(&dialog);
-    QFormLayout *layoutForm = new QFormLayout();
-
-    QLineEdit *editNom = new QLineEdit(&dialog);
-    QLineEdit *editPrenom = new QLineEdit(&dialog);
-    QLineEdit *editMail = new QLineEdit(&dialog);
-
-    layoutForm->addRow("Nom :", editNom);
-    layoutForm->addRow("Prénom :", editPrenom);
-    layoutForm->addRow("Mail :", editMail);
-
-    layoutMain->addLayout(layoutForm);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttonBox->button(QDialogButtonBox::Ok)->setText("Créer");
-    buttonBox->button(QDialogButtonBox::Cancel)->setText("Annuler");
-    layoutMain->addWidget(buttonBox);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        std::string nom = editNom->text().toStdString();
-        std::string prenom = editPrenom->text().toStdString();
-        std::string mail = editMail->text().toStdString();
-
-        Enseignant nouvelEnseignant;
-        if (mail.empty()) {
-            nouvelEnseignant = Enseignant(nom, prenom);
-        } else {
-            nouvelEnseignant = Enseignant(nom, prenom, mail);
-        }
-
+    if (nouvelEnseignant != nullptr) {
         QString fichierJson = m_dataPath + "enseignants.json";
         std::vector<Enseignant> liste = Enseignant::readFromJSON(fichierJson);
 
-        liste.push_back(nouvelEnseignant);
+        liste.push_back(*nouvelEnseignant);
         Enseignant::writeToJSON(liste, fichierJson);
 
         QMessageBox::information(this, "Succès", "L'enseignant a été ajouté et sauvegardé.");
+
+        delete nouvelEnseignant;
     }
 }
 
@@ -100,42 +71,46 @@ void MainWindow::on_btnAfficherEnseignants_clicked()
     QMessageBox::information(this, "Liste des enseignants", texteAffichage);
 }
 
+void MainWindow::on_btnSupprimerEnseignant_clicked()
+{
+    QString fichierJson = m_dataPath + "enseignants.json";
+    std::vector<Enseignant> liste = Enseignant::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun enseignant à supprimer.");
+        return;
+    }
+
+    int index = Controleur_enseignant::supprimerEnseignant(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Enseignant::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "L'enseignant a été supprimé avec succès.");
+    }
+}
+
 // --------------------------------------------------------
 // Gestion des Groupes d'Étudiants
 // --------------------------------------------------------
 
 void MainWindow::on_btnAjouterGroupe_clicked()
 {
-    QDialog dialog(this);
-    dialog.setWindowTitle("Ajouter un groupe");
+    // Appel du contrôleur
+    GroupeEtudiant* nouveauGroupe = Controleur_groupeetudiant::creationGroupe();
 
-    QVBoxLayout *layoutMain = new QVBoxLayout(&dialog);
-    QFormLayout *layoutForm = new QFormLayout();
-    QLineEdit *editNom = new QLineEdit(&dialog);
-
-    layoutForm->addRow("Nom du groupe :", editNom);
-    layoutMain->addLayout(layoutForm);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttonBox->button(QDialogButtonBox::Ok)->setText("Créer");
-    buttonBox->button(QDialogButtonBox::Cancel)->setText("Annuler");
-    layoutMain->addWidget(buttonBox);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        std::string nom = editNom->text().toStdString();
-
-        GroupeEtudiant nouveauGroupe(nom);
-
+    // Si le pointeur n'est pas nul, on sauvegarde
+    if (nouveauGroupe != nullptr) {
         QString fichierJson = m_dataPath + "groupes.json";
         std::vector<GroupeEtudiant> liste = GroupeEtudiant::readFromJSON(fichierJson);
 
-        liste.push_back(nouveauGroupe);
+        liste.push_back(*nouveauGroupe);
         GroupeEtudiant::writeToJSON(liste, fichierJson);
 
         QMessageBox::information(this, "Succès", "Le groupe a été ajouté et sauvegardé.");
+
+        // Libération de la mémoire
+        delete nouveauGroupe;
     }
 }
 
@@ -157,55 +132,46 @@ void MainWindow::on_btnAfficherGroupes_clicked()
     QMessageBox::information(this, "Liste des groupes", texteAffichage);
 }
 
+void MainWindow::on_btnSupprimerGroupe_clicked()
+{
+    QString fichierJson = m_dataPath + "groupes.json";
+    std::vector<GroupeEtudiant> liste = GroupeEtudiant::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun groupe à supprimer.");
+        return;
+    }
+
+    int index = Controleur_groupeetudiant::supprimerGroupe(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        GroupeEtudiant::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "Le groupe a été supprimé avec succès.");
+    }
+}
+
 // --------------------------------------------------------
 // Gestion des Salles
 // --------------------------------------------------------
 
+
 void MainWindow::on_btnAjouterSalle_clicked()
 {
-    QDialog dialog(this);
-    dialog.setWindowTitle("Ajouter une salle");
+    Salle* nouvelleSalle = Controleur_salle::creationSalle();
 
-    QVBoxLayout *layoutMain = new QVBoxLayout(&dialog);
-    QFormLayout *layoutForm = new QFormLayout();
-
-    QLineEdit *editNumero = new QLineEdit(&dialog);
-    QComboBox *comboType = new QComboBox(&dialog);
-
-    comboType->addItem("Salle standard", TypeSalle::SALLE);
-    comboType->addItem("Electronique", TypeSalle::ELECTRONIQUE);
-    comboType->addItem("Informatique", TypeSalle::INFORMATIQUE);
-
-    layoutForm->addRow("Numéro :", editNumero);
-    layoutForm->addRow("Type :", comboType);
-    layoutMain->addLayout(layoutForm);
-
-    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    buttonBox->button(QDialogButtonBox::Ok)->setText("Créer");
-    buttonBox->button(QDialogButtonBox::Cancel)->setText("Annuler");
-    layoutMain->addWidget(buttonBox);
-
-    connect(buttonBox, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttonBox, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() == QDialog::Accepted) {
-        std::string numero = editNumero->text().toStdString();
-        TypeSalle type = static_cast<TypeSalle>(comboType->currentData().toInt());
-
-        Salle nouvelleSalle(numero, type);
-
-        if (!nouvelleSalle.isSalleValid()) {
-            QMessageBox::warning(this, "Erreur", "Le numéro de salle doit contenir exactement 3 chiffres.");
-            return;
-        }
-
+    // Si la salle n'est pas nulle, c'est que l'utilisateur a validé la création
+    if (nouvelleSalle != nullptr) {
         QString fichierJson = m_dataPath + "salles.json";
         std::vector<Salle> liste = Salle::readFromJSON(fichierJson);
 
-        liste.push_back(nouvelleSalle);
+        liste.push_back(*nouvelleSalle);
         Salle::writeToJSON(liste, fichierJson);
 
         QMessageBox::information(this, "Succès", "La salle a été ajoutée et sauvegardée.");
+
+        // Pensez à libérer la mémoire allouée dynamiquement par le "new" dans le contrôleur
+        delete nouvelleSalle;
     }
 }
 
@@ -225,4 +191,23 @@ void MainWindow::on_btnAfficherSalles_clicked()
     }
 
     QMessageBox::information(this, "Liste des salles", texteAffichage);
+}
+
+void MainWindow::on_btnSupprimerSalle_clicked()
+{
+    QString fichierJson = m_dataPath + "salles.json";
+    std::vector<Salle> liste = Salle::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucune salle à supprimer.");
+        return;
+    }
+
+    int index = Controleur_salle::supprimerSalle(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Salle::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "La salle a été supprimée avec succès.");
+    }
 }

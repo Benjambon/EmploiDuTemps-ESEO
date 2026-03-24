@@ -20,12 +20,12 @@ std::string GroupeEtudiant::toString(void) const{
     return res;
 }
 
-bool GroupeEtudiant::isNomValid(void){
-    if(this->getNom()==""){
-        return false;
+GroupeEtudiant::code_erreur_nom GroupeEtudiant::isNomValid(void){
+    if(this->getNom() == ""){
+        return GroupeEtudiant::NOM_VIDE;
     }
     else{
-        return true;
+        return GroupeEtudiant::NOM_OK;
     }
 }
 
