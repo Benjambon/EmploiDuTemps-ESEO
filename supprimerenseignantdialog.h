@@ -16,7 +16,6 @@ private:
     QComboBox* comboEnseignants;
     QDialogButtonBox* buttonBox;
     QVBoxLayout* layout;
-²
     void init_components(const std::vector<Enseignant>& listeEnseignants);
     void init_layout(void);
     void init_slots(void);

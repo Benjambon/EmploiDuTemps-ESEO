@@ -23,12 +23,12 @@ void EcueDialog::init_components(const std::vector<Enseignant>& listE, const std
         this->comboGroupe->addItem(QString::fromStdString(listG[i].toString()), static_cast<int>(i));
     }
 
-    // Création des compteurs d'heures (spinbox) avec une boucle
     eTypeCours types[] = { eTypeCours::CM, eTypeCours::TD, eTypeCours::TP_INFO, eTypeCours::TP_ELEC, eTypeCours::EXAMEN_EN_SALLE, eTypeCours::EXAMEN_INFO, eTypeCours::EXAMEN_ELEC };
 
     for (eTypeCours type : types) {
         QSpinBox* spin = new QSpinBox(this);
         spin->setRange(0, 100);
+        spin->setSingleStep(2); // Les flèches feront sauter les valeurs de 2 en 2
         this->mapSpins[type] = spin;
     }
 
