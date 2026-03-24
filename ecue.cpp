@@ -92,15 +92,6 @@ std::string Ecue::to_string() const
         return res;
 }
 
-bool Ecue::isEcueValid()
-{
-    if (this->enseignant.isEnseignantValid() && this->groupeEtudiant.isNomValid() && this->heureTotal != 0 && this->heureRestante<=this->heureTotal){
-        return true;
-    }else{
-        return false;
-    }
-}
-
 Ecue::code_erreur_typeCours Ecue::isTypeCoursValid(const eTypeCours& typeCours)
 {
     if(typeCours == eTypeCours::DEFAULT) { return Ecue::TYPECOURS_NONDEFINIT; }
@@ -108,12 +99,21 @@ Ecue::code_erreur_typeCours Ecue::isTypeCoursValid(const eTypeCours& typeCours)
 }
 
 
-Ecue::code_erreur_heureTotal isHeureTotalValid(const int& heureTotal)
+Ecue::code_erreur_heureTotal Ecue::isHeureTotalValid(const int& heureTotal)
 {
     if(heureTotal == 0) { return Ecue::HEURETOTAL_NUL; }
     if(heureTotal < 0) { return Ecue::HEURETOTAL_NEGATIF; }
     if(heureTotal % 2) { return Ecue::HEURETOTAL_IMPAIR; }
     return Ecue::HEURETOTAL_OK;
+}
+
+Ecue::code_erreur_heureRestante Ecue::isHeureRestanteValid(const int& heureRestante)
+{
+    if(heureRestante == 0) { return Ecue::HEURERESTANTE_NUL; }
+    if(heureRestante < 0) { return Ecue::HEURERESTANTE_NEGATIF; }
+    if(heureRestante % 2) { return Ecue::HEURERESTANTE_IMPAIR; }
+    if(heureRestante > this->heureTotal) { return Ecue::HEURERESTANTE_SUPERIEUR_TOTAL; }
+    return Ecue::HEURERESTANTE_OK;
 }
 
 QJsonObject Ecue::toJSON(void) const
