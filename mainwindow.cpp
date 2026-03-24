@@ -16,6 +16,7 @@
 #include "controleur_groupeetudiant.h"
 #include "controleur_enseignant.h"
 #include "controleur_ecue.h"
+#include "emploidutempsdialog.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -23,6 +24,10 @@ MainWindow::MainWindow(QString dataPath, QWidget *parent)
     , m_dataPath(dataPath)
 {
     ui->setupUi(this);
+    ui->tabWidget->setTabText(0, "Emploi du temps");
+    QVBoxLayout* tabLayout = new QVBoxLayout(ui->tab);
+    EmploiDuTempsDialog* edtDialog = new EmploiDuTempsDialog(m_dataPath, this);
+    tabLayout->addWidget(edtDialog);
 }
 
 MainWindow::~MainWindow()

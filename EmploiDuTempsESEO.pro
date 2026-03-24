@@ -15,6 +15,7 @@ SOURCES += \
     controleur_salle.cpp \
     ecue.cpp \
     ecuedialog.cpp \
+    emploidutempsdialog.cpp \
     enseignant.cpp \
     enseignantdialog.cpp \
     groupeetudiant.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     controleur_salle.h \
     ecue.h \
     ecuedialog.h \
+    emploidutempsdialog.h \
     enseignant.h \
     enseignantdialog.h \
     groupeetudiant.h \
