@@ -12,6 +12,8 @@ class GroupeEtudiant
 private:
     std::string nom;
 public:
+    enum code_erreur_nom { NOM_OK, NOM_VIDE};
+
     //Constructeurs
     GroupeEtudiant();
     GroupeEtudiant(const std::string &nom);
@@ -22,7 +24,7 @@ public:
 
     //Methodes
     std::string toString(void) const;
-    bool isNomValid(void);
+    code_erreur_nom isNomValid(void);
     QJsonObject toJSON(void) const;
 
 public:

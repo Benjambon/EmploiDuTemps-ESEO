@@ -1,4 +1,5 @@
 #include "salle.h"
+#include <cctype>
 
 std::string Salle::getNumero() const
 {
@@ -25,25 +26,28 @@ Salle::Salle() {
     this->typeSalle=TypeSalle::SALLE;
 }
 
-bool Salle::isSalleValid(void){
+Salle::code_erreur_numero Salle::isNumeroValid(void) {
     if (this->numero.length() != 3) {
-        return false;
+        return Salle::NUMERO_TROP_LONG;
     }
 
-
     for (char c : this->numero) {
-        if (!std::isdigit(c)) {
-            return false;
+        if (!::isdigit(c))  {
+            return Salle::NUMERO_PAS_CHIFFRE;
         }
     }
 
+    return Salle::NUMERO_OK;
+}
+
+Salle::code_erreur_type Salle::isTypeValid(void) {
     if (typeSalle != TypeSalle::SALLE &&
         typeSalle != TypeSalle::ELECTRONIQUE &&
         typeSalle != TypeSalle::INFORMATIQUE) {
-        return false;
+        return Salle::TYPE_INVALIDE;
     }
 
-    return true;
+    return TYPE_OK;
 }
 
 std::string Salle::toString(void) const {

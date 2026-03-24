@@ -15,10 +15,16 @@ SOURCES += \
     creneau.cpp \
     ecue.cpp \
     enseignant.cpp \
+    enseignantdialog.cpp \
     groupeetudiant.cpp \
+    groupeetudiantdialog.cpp \
     main.cpp \
     mainwindow.cpp \
-    salle.cpp
+    salle.cpp \
+    salledialog.cpp \
+    supprimerenseignantdialog.cpp \
+    supprimergroupeetudiantdialog.cpp \
+    supprimersalledialog.cpp
 
 HEADERS += \
     controleur_enseignant.h \
@@ -27,9 +33,15 @@ HEADERS += \
     creneau.h \
     ecue.h \
     enseignant.h \
+    enseignantdialog.h \
     groupeetudiant.h \
+    groupeetudiantdialog.h \
     mainwindow.h \
-    salle.h
+    salle.h \
+    salledialog.h \
+    supprimerenseignantdialog.h \
+    supprimergroupeetudiantdialog.h \
+    supprimersalledialog.h
 
 FORMS += \
     mainwindow.ui

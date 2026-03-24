@@ -1,15 +1,16 @@
 #ifndef CONTROLEUR_SALLE_H
 #define CONTROLEUR_SALLE_H
 
-#include <string>
 #include "salle.h"
+
 class Controleur_salle
 {
 public:
-
     Controleur_salle();
 
-    static std::string TestSalle(std::string numero, TypeSalle typeSalle);
+    // Méthode principale qui pilote la création
+    static Salle* creationSalle(void);
+    static int supprimerSalle(const std::vector<Salle>& listeSalles);
 };
 
 #endif // CONTROLEUR_SALLE_H

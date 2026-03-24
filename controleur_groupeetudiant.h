@@ -1,15 +1,15 @@
 #ifndef CONTROLEUR_GROUPEETUDIANT_H
 #define CONTROLEUR_GROUPEETUDIANT_H
 
-#include <string>
+#include "groupeetudiant.h"
 
 class Controleur_groupeetudiant
 {
 public:
-
     Controleur_groupeetudiant();
 
-    static std::string TestNomGroupe(std::string nom);
+    static GroupeEtudiant* creationGroupe(void);
+    static int supprimerGroupe(const std::vector<GroupeEtudiant>& listeGroupes);
 };
 
 #endif // CONTROLEUR_GROUPEETUDIANT_H

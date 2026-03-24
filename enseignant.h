@@ -15,16 +15,17 @@ private:
     std::string prenom;
     std::string mail;
 
-
 public:
+    enum code_erreur_nom { NOM_OK, NOM_VIDE,NOM_CHIFFRE};
+    enum code_erreur_prenom { PRENOM_OK, PRENOM_VIDE, PRENOM_CHIFFRE};
+    enum code_erreur_mail { MAIL_OK, MAIL_SYNTAXE };
 
-    //Constructeurs
+    // Constructeurs
     Enseignant();
     Enseignant(const std::string &nom, const std::string &prenom, const std::string &mail);
     Enseignant(const std::string &nom, const std::string &prenom);
 
-
-    //Getter Setter
+    // Getter Setter
     std::string getNom() const;
     void setNom(const std::string &newNom);
     std::string getPrenom() const;
@@ -32,20 +33,21 @@ public:
     std::string getMail() const;
     void setMail(const std::string &newMail);
 
-
-    //Methodes
+    // Methodes
     std::string toString(void) const;
-    bool isMailValid(void);
-    bool isNomValid(void);
-    bool isPrenomValid(void);
-    bool isEnseignantValid(void);
+
+    // Validation
+    code_erreur_mail isMailValid(void);
+    code_erreur_nom isNomValid(void);
+    code_erreur_prenom isPrenomValid(void);
+
+
     QJsonObject toJSON(void) const;
 
 public:
     static Enseignant fromJSON(QJsonObject json);
     static void writeToJSON(std::vector<Enseignant> vector, QString filepath);
     static std::vector<Enseignant> readFromJSON(QString filepath);
-
 };
 
 #endif // ENSEIGNANT_H
