@@ -1,4 +1,5 @@
 QT       += core gui
+QT += core gui testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,7 +28,11 @@ SOURCES += \
     supprimerecuedialog.cpp \
     supprimerenseignantdialog.cpp \
     supprimergroupeetudiantdialog.cpp \
-    supprimersalledialog.cpp
+    supprimersalledialog.cpp \
+    test_ecue.cpp \
+    test_enseignant.cpp \
+    test_groupeetudiant.cpp \
+    test_salle.cpp
 
 HEADERS += \
     controleur_ecue.h \
@@ -47,7 +52,11 @@ HEADERS += \
     supprimerecuedialog.h \
     supprimerenseignantdialog.h \
     supprimergroupeetudiantdialog.h \
-    supprimersalledialog.h
+    supprimersalledialog.h \
+    test_ecue.h \
+    test_enseignant.h \
+    test_groupeetudiant.h \
+    test_salle.h
 
 FORMS += \
     mainwindow.ui
