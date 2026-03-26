@@ -12,8 +12,10 @@ class Creneau
 {
 public:
 
-    enum code_erreur_horaire { HORAIRE_OK, HORAIRE_NONDEEFINT };
-    enum code_erreur_date { DATE_OK};
+    // Déclaration complète et propre des codes d'erreur
+    enum code_erreur_horaire { HORAIRE_OK, HORAIRE_NONDEFINIT };
+    enum code_erreur_date { DATE_OK, DATE_NULLE, DATE_INVALIDE };
+    enum code_erreur_typeCours { TYPECOURS_OK, TYPECOURS_NONDEFINIT };
 
     //Attributs
     eHoraire horaire;
@@ -37,12 +39,14 @@ public:
     void setSalle(const Salle &newSalle);
     std::string to_string() const;
 
-    //Méthodes de validation
+    //Méthodes de validation que j'ai rajoutées
+    code_erreur_horaire isHoraireValid() const;
+    code_erreur_date isDateValid() const;
+    code_erreur_typeCours isTypeCoursValid() const;
 
     //Json
     QJsonObject toJSON() const;
     static Creneau fromJSON(QJsonObject json);
-
     static void writeToJSON(std::vector<Creneau> vector, QString filepath);
     static std::vector<Creneau> readFromJSON(QString filepath);
 

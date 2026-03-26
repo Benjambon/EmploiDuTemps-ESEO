@@ -60,8 +60,32 @@ void Creneau::setSalle(const Salle &newSalle)
 
 std::string Creneau::to_string() const
 {
-    std::string res = "Horaire : " + Creneau::horaireToString(horaire) + ", Date : " + date.toString() + ", Ecue : " + ecue.to_string() + ", Type de Cours : " + Ecue::typeCoursToString(typeCours) + ", Salle : " + salle.toString();
+    std::string res = "Horaire : " + Creneau::horaireToString(horaire).toStdString() + ", Date : " + date.toString().toStdString() + ", Ecue : " + ecue.to_string() + ", Type de Cours : " + Ecue::typeCoursToString(typeCours).toStdString() + ", Salle : " + salle.toString();
     return res;
+}
+
+Creneau::code_erreur_horaire Creneau::isHoraireValid() const {
+    if (this->horaire == eHoraire::NONDEFINIT) {
+        return HORAIRE_NONDEFINIT;
+    }
+    return HORAIRE_OK;
+}
+
+Creneau::code_erreur_date Creneau::isDateValid() const {
+    if (this->date.isNull()) {
+        return DATE_NULLE;
+    }
+    if (!this->date.isValid()) {
+        return DATE_INVALIDE;
+    }
+    return DATE_OK;
+}
+
+Creneau::code_erreur_typeCours Creneau::isTypeCoursValid() const {
+    if (this->typeCours == eTypeCours::DEFAULT) {
+        return TYPECOURS_NONDEFINIT;
+    }
+    return TYPECOURS_OK;
 }
 
 QJsonObject Creneau::toJSON(void) const
