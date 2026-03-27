@@ -19,6 +19,7 @@
 #include "controleur_groupeetudiant.h"
 #include "controleur_enseignant.h"
 #include "controleur_ecue.h"
+#include "emploidutempsdialog.h"
 #include <QGroupBox>
 #include <QGroupBox>
 #include <QTabWidget>

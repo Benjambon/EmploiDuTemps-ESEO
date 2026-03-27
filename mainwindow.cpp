@@ -40,6 +40,7 @@ QFile file(":/styles/styles.qss");
 
 void MainWindow::init_layout(void)
 {
+    // 1. Création du système d'onglets
     QTabWidget *systemeOnglets = new QTabWidget(this);
 
     // ==========================================
@@ -50,7 +51,7 @@ void MainWindow::init_layout(void)
     layoutPrincipal->setSpacing(20);
     layoutPrincipal->setContentsMargins(30, 30, 30, 30);
 
-    // 1. Simplification des textes des boutons
+    // Simplification des textes
     QString txtAjouter = "Ajouter";
     QString txtSupprimer = "Supprimer";
     QString txtAfficher = "Afficher";
@@ -71,7 +72,7 @@ void MainWindow::init_layout(void)
     ui->btnSupprimerEcue->setText(txtSupprimer);
     ui->btnAfficherEcues->setText(txtAfficher);
 
-    // 2. Ajout des icônes partout
+    // Ajout des icônes (vos fichiers SVG avec fond blanc)
     QIcon iconAjouter(":/icons/plus.svg");
     QIcon iconSupprimer(":/icons/minus.svg");
     QIcon iconAfficher(":/icons/eye.svg");
@@ -92,7 +93,7 @@ void MainWindow::init_layout(void)
     ui->btnSupprimerEcue->setIcon(iconSupprimer);
     ui->btnAfficherEcues->setIcon(iconAfficher);
 
-    // 3. Création des groupes avec le nouvel ordre (Ajouter, Supprimer, Afficher)
+    // Création des groupes (Ajouter, Supprimer, Afficher)
     QGroupBox *groupeEnseignants = new QGroupBox("Enseignants");
     QHBoxLayout *layoutEns = new QHBoxLayout;
     layoutEns->addWidget(ui->btnAjouterEnseignant);
@@ -126,7 +127,6 @@ void MainWindow::init_layout(void)
     layoutPrincipal->addWidget(groupeEcue);
 
     layoutPrincipal->addStretch();
-
     systemeOnglets->addTab(ongletGestion, "Gestion des données");
 
     // ==========================================
@@ -135,8 +135,16 @@ void MainWindow::init_layout(void)
     QWidget *ongletEmploi = new QWidget();
     QVBoxLayout *layoutEmploi = new QVBoxLayout(ongletEmploi);
 
+    // Intégration de votre boîte de dialogue
+    EmploiDuTempsDialog *interfaceEmploi = new EmploiDuTempsDialog(m_dataPath, ongletEmploi);
+    interfaceEmploi->setWindowFlags(Qt::Widget);
+    layoutEmploi->addWidget(interfaceEmploi);
+
     systemeOnglets->addTab(ongletEmploi, "Emploi du temps");
 
+    // ==========================================
+    // APPLICATION À LA FENÊTRE
+    // ==========================================
     this->setCentralWidget(systemeOnglets);
 }
 

@@ -1,4 +1,6 @@
+INCLUDEPATH += $$PWD
 QT       += core gui
+QT += core gui testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +30,11 @@ SOURCES += \
     supprimerecuedialog.cpp \
     supprimerenseignantdialog.cpp \
     supprimergroupeetudiantdialog.cpp \
-    supprimersalledialog.cpp
+    supprimersalledialog.cpp \
+    tests/test_ecue.cpp \
+    tests/test_enseignant.cpp \
+    tests/test_groupeetudiant.cpp \
+    tests/test_salle.cpp
 
 HEADERS += \
     controleur_ecue.h \
@@ -49,7 +55,11 @@ HEADERS += \
     supprimerecuedialog.h \
     supprimerenseignantdialog.h \
     supprimergroupeetudiantdialog.h \
-    supprimersalledialog.h
+    supprimersalledialog.h \
+    tests/test_ecue.h \
+    tests/test_enseignant.h \
+    tests/test_groupeetudiant.h \
+    tests/test_salle.h
 
 FORMS += \
     mainwindow.ui
