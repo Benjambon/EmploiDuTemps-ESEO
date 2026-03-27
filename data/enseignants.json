@@ -8,5 +8,15 @@
         "mail": "qsd.qsd@eseo.fr",
         "nom": "qsd",
         "prenom": "qsd"
+    },
+    {
+        "mail": "lucas.morlet@reseau.eseo.fr",
+        "nom": "Lucas",
+        "prenom": "Morlet"
+    },
+    {
+        "mail": "aaa.aaa@eseo.fr",
+        "nom": "aaa",
+        "prenom": "aaa"
     }
 ]

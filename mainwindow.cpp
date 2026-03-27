@@ -1,22 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include <QDialog>
-#include <QVBoxLayout>
-#include <QFormLayout>
-#include <QLineEdit>
-#include <QDialogButtonBox>
-#include <QPushButton>
-#include <QMessageBox>
-#include <QComboBox>
-#include <vector>
-#include "enseignant.h"
-#include "groupeetudiant.h"
-#include "salle.h"
-#include "controleur_salle.h"
-#include "controleur_groupeetudiant.h"
-#include "controleur_enseignant.h"
-#include "controleur_ecue.h"
-#include "emploidutempsdialog.h"
 
 MainWindow::MainWindow(QString dataPath, QWidget *parent)
     : QMainWindow(parent)
@@ -24,6 +6,8 @@ MainWindow::MainWindow(QString dataPath, QWidget *parent)
     , m_dataPath(dataPath)
 {
     ui->setupUi(this);
+    this->init_style();
+    this->init_layout();
     ui->tabWidget->setTabText(0, "Emploi du temps");
     QVBoxLayout* tabLayout = new QVBoxLayout(ui->tab);
     EmploiDuTempsDialog* edtDialog = new EmploiDuTempsDialog(m_dataPath, this);
@@ -33,6 +17,134 @@ MainWindow::MainWindow(QString dataPath, QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::init_style(void)
+{
+    // Le préfixe ":/" indique que l'on cherche dans le fichier de ressources (.qrc)
+QFile file(":/styles/styles.qss");
+    if (file.open(QFile::ReadOnly | QFile::Text))
+    {
+        QString styleSheet = QTextStream(&file).readAll();
+        // qApp applique le style à l'application entière, pas seulement à MainWindow
+        qApp->setStyleSheet(styleSheet);
+        file.close();
+        qDebug() << "Style QSS charge avec succes.";
+    }
+    else
+    {
+        qDebug() << "Erreur : Impossible de charger le fichier QSS.";
+    }
+}
+
+void MainWindow::init_layout(void)
+{
+    // 1. Création du système d'onglets
+    QTabWidget *systemeOnglets = new QTabWidget(this);
+
+    // ==========================================
+    // ONGLET 1 : GESTION DES DONNÉES
+    // ==========================================
+    QWidget *ongletGestion = new QWidget();
+    QVBoxLayout *layoutPrincipal = new QVBoxLayout(ongletGestion);
+    layoutPrincipal->setSpacing(20);
+    layoutPrincipal->setContentsMargins(30, 30, 30, 30);
+
+    // Simplification des textes
+    QString txtAjouter = "Ajouter";
+    QString txtSupprimer = "Supprimer";
+    QString txtAfficher = "Afficher";
+
+    ui->btnAjouterEnseignant->setText(txtAjouter);
+    ui->btnSupprimerEnseignant->setText(txtSupprimer);
+    ui->btnAfficherEnseignants->setText(txtAfficher);
+
+    ui->btnAjouterGroupe->setText(txtAjouter);
+    ui->btnSupprimerGroupe->setText(txtSupprimer);
+    ui->btnAfficherGroupes->setText(txtAfficher);
+
+    ui->btnAjouterSalle->setText(txtAjouter);
+    ui->btnSupprimerSalle->setText(txtSupprimer);
+    ui->btnAfficherSalles->setText(txtAfficher);
+
+    ui->btnAjouterEcue->setText(txtAjouter);
+    ui->btnSupprimerEcue->setText(txtSupprimer);
+    ui->btnAfficherEcues->setText(txtAfficher);
+
+    // Ajout des icônes (vos fichiers SVG avec fond blanc)
+    QIcon iconAjouter(":/icons/plus.svg");
+    QIcon iconSupprimer(":/icons/minus.svg");
+    QIcon iconAfficher(":/icons/eye.svg");
+
+    ui->btnAjouterEnseignant->setIcon(iconAjouter);
+    ui->btnSupprimerEnseignant->setIcon(iconSupprimer);
+    ui->btnAfficherEnseignants->setIcon(iconAfficher);
+
+    ui->btnAjouterGroupe->setIcon(iconAjouter);
+    ui->btnSupprimerGroupe->setIcon(iconSupprimer);
+    ui->btnAfficherGroupes->setIcon(iconAfficher);
+
+    ui->btnAjouterSalle->setIcon(iconAjouter);
+    ui->btnSupprimerSalle->setIcon(iconSupprimer);
+    ui->btnAfficherSalles->setIcon(iconAfficher);
+
+    ui->btnAjouterEcue->setIcon(iconAjouter);
+    ui->btnSupprimerEcue->setIcon(iconSupprimer);
+    ui->btnAfficherEcues->setIcon(iconAfficher);
+
+    // Création des groupes (Ajouter, Supprimer, Afficher)
+    QGroupBox *groupeEnseignants = new QGroupBox("Enseignants");
+    QHBoxLayout *layoutEns = new QHBoxLayout;
+    layoutEns->addWidget(ui->btnAjouterEnseignant);
+    layoutEns->addWidget(ui->btnSupprimerEnseignant);
+    layoutEns->addWidget(ui->btnAfficherEnseignants);
+    groupeEnseignants->setLayout(layoutEns);
+    layoutPrincipal->addWidget(groupeEnseignants);
+
+    QGroupBox *groupeEtudiants = new QGroupBox("Groupes d'Étudiants");
+    QHBoxLayout *layoutGrp = new QHBoxLayout;
+    layoutGrp->addWidget(ui->btnAjouterGroupe);
+    layoutGrp->addWidget(ui->btnSupprimerGroupe);
+    layoutGrp->addWidget(ui->btnAfficherGroupes);
+    groupeEtudiants->setLayout(layoutGrp);
+    layoutPrincipal->addWidget(groupeEtudiants);
+
+    QGroupBox *groupeSalles = new QGroupBox("Salles");
+    QHBoxLayout *layoutSal = new QHBoxLayout;
+    layoutSal->addWidget(ui->btnAjouterSalle);
+    layoutSal->addWidget(ui->btnSupprimerSalle);
+    layoutSal->addWidget(ui->btnAfficherSalles);
+    groupeSalles->setLayout(layoutSal);
+    layoutPrincipal->addWidget(groupeSalles);
+
+    QGroupBox *groupeEcue = new QGroupBox("ECUE");
+    QHBoxLayout *layoutEcu = new QHBoxLayout;
+    layoutEcu->addWidget(ui->btnAjouterEcue);
+    layoutEcu->addWidget(ui->btnSupprimerEcue);
+    layoutEcu->addWidget(ui->btnAfficherEcues);
+    groupeEcue->setLayout(layoutEcu);
+    layoutPrincipal->addWidget(groupeEcue);
+
+    layoutPrincipal->addStretch();
+    systemeOnglets->addTab(ongletGestion, "Gestion des données");
+
+    // ==========================================
+    // ONGLET 2 : EMPLOI DU TEMPS
+    // ==========================================
+    QWidget *ongletEmploi = new QWidget();
+    QVBoxLayout *layoutEmploi = new QVBoxLayout(ongletEmploi);
+
+    // Intégration de votre boîte de dialogue
+    EmploiDuTempsDialog *interfaceEmploi = new EmploiDuTempsDialog(m_dataPath, ongletEmploi);
+    interfaceEmploi->setWindowFlags(Qt::Widget);
+    layoutEmploi->addWidget(interfaceEmploi);
+
+    systemeOnglets->addTab(ongletEmploi, "Emploi du temps");
+
+    // ==========================================
+    // APPLICATION À LA FENÊTRE
+    // ==========================================
+    this->setCentralWidget(systemeOnglets);
 }
 
 // --------------------------------------------------------
@@ -314,3 +426,4 @@ void MainWindow::on_btnAfficherEcues_clicked()
     msgBox.setTextFormat(Qt::RichText);
     msgBox.exec();
 }
+

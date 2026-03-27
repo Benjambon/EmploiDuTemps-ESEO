@@ -2,6 +2,28 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "ui_mainwindow.h"
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QFormLayout>
+#include <QLineEdit>
+#include <QDialogButtonBox>
+#include <QPushButton>
+#include <QMessageBox>
+#include <QComboBox>
+#include <vector>
+#include "enseignant.h"
+#include "groupeetudiant.h"
+#include "salle.h"
+#include "controleur_salle.h"
+#include "controleur_groupeetudiant.h"
+#include "controleur_enseignant.h"
+#include "controleur_ecue.h"
+#include "emploidutempsdialog.h"
+#include <QGroupBox>
+#include <QGroupBox>
+#include <QTabWidget>
+#include <QIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +38,8 @@ public:
     ~MainWindow();
 
 private slots:
+
+
     void on_btnAjouterEnseignant_clicked();
     void on_btnAfficherEnseignants_clicked();
     void on_btnSupprimerEnseignant_clicked();
@@ -35,5 +59,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QString m_dataPath;
+    void init_style(void);
+    void init_layout(void);
 };
 #endif // MAINWINDOW_Hx
