@@ -1,3 +1,4 @@
+INCLUDEPATH += $$PWD
 QT       += core gui
 QT += core gui testlib
 
@@ -29,10 +30,10 @@ SOURCES += \
     supprimerenseignantdialog.cpp \
     supprimergroupeetudiantdialog.cpp \
     supprimersalledialog.cpp \
-    test_ecue.cpp \
-    test_enseignant.cpp \
-    test_groupeetudiant.cpp \
-    test_salle.cpp
+    tests/test_ecue.cpp \
+    tests/test_enseignant.cpp \
+    tests/test_groupeetudiant.cpp \
+    tests/test_salle.cpp
 
 HEADERS += \
     controleur_ecue.h \
@@ -53,10 +54,10 @@ HEADERS += \
     supprimerenseignantdialog.h \
     supprimergroupeetudiantdialog.h \
     supprimersalledialog.h \
-    test_ecue.h \
-    test_enseignant.h \
-    test_groupeetudiant.h \
-    test_salle.h
+    tests/test_ecue.h \
+    tests/test_enseignant.h \
+    tests/test_groupeetudiant.h \
+    tests/test_salle.h
 
 FORMS += \
     mainwindow.ui

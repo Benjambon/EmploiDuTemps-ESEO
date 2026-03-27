@@ -9,13 +9,10 @@
 #include <groupeetudiant.h>
 #include <ecue.h>
 
-// ==========================================
-// Inclusions des classes de test
-// ==========================================
-#include "test_enseignant.h"
-#include "test_salle.h"
-#include "test_groupeetudiant.h"
-#include "test_ecue.h"
+#include "tests/test_enseignant.h"
+#include "tests/test_salle.h"
+#include "tests/test_groupeetudiant.h"
+#include "tests/test_ecue.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,32 +28,27 @@ int main(int argc, char *argv[])
     // 1. Test Enseignant
     TestEnseignant testEns;
     totalErrors += QTest::qExec(&testEns, argc, argv);
-    std::cout << "---------------------------------------------------\n" << std::endl;
 
     // 2. Test Salle
     TestSalle testSalle;
     totalErrors += QTest::qExec(&testSalle, argc, argv);
-    std::cout << "---------------------------------------------------\n" << std::endl;
 
     // 3. Test GroupeEtudiant
     TestGroupeEtudiant testGrp;
     totalErrors += QTest::qExec(&testGrp, argc, argv);
-    std::cout << "---------------------------------------------------\n" << std::endl;
 
     // 4. Test Ecue
     TestEcue testEcue;
     totalErrors += QTest::qExec(&testEcue, argc, argv);
-    std::cout << "---------------------------------------------------\n" << std::endl;
 
     // Bilan global
     if (totalErrors != 0) {
-        qDebug() << "❌ ATTENTION : Il y a eu" << totalErrors << "echec(s) dans les tests !";
-        // return -1; // Décommentez pour bloquer le lancement si les tests échouent
+        qDebug() << " ATTENTION : Il y a eu" << totalErrors << "echec(s) dans les tests !";
+        // return -1; // Décommenter pour bloquer le lancement si les tests échouent
     } else {
-        qDebug() << "✅ SUCCES : L'integralite des tests a reussi !";
+        qDebug() << " SUCCES : L'integralite des tests a reussi !";
     }
 
-    std::cout << "\n========== FIN DES TESTS UNITAIRES ==========\n" << std::endl;
     // ==========================================
     // FIN DU BLOC DE TESTS
     // ==========================================
