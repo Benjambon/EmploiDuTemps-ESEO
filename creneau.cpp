@@ -18,6 +18,16 @@ Creneau::Creneau(eHoraire horaire, QDate date, Ecue ecue, eTypeCours typeCours, 
     this->salle = salle;
 }
 
+QDate Creneau::getDate() const
+{
+    return date;
+}
+
+void Creneau::setDate(const QDate &newDate)
+{
+    date = newDate;
+}
+
 eHoraire Creneau::getHoraire() const
 {
     return horaire;

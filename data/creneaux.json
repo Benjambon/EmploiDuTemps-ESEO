@@ -1,0 +1,132 @@
+[
+    {
+        "Date": "Mon Mar 31 2025",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "vincent",
+                "prenom": "trenchant"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 4
+            },
+            "HeuresTotales": {
+                "CM": 4
+            },
+            "Nom": "Math2"
+        },
+        "Horaire": "MATIN2",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Mon Mar 30 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "trenchant",
+                "prenom": "vincent"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 4
+            },
+            "HeuresTotales": {
+                "CM": 4
+            },
+            "Nom": "Math2"
+        },
+        "Horaire": "APRESMIDI1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Mon Mar 30 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "vincent",
+                "prenom": "trenchant"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 4
+            },
+            "HeuresTotales": {
+                "CM": 4
+            },
+            "Nom": "Math2"
+        },
+        "Horaire": "MATIN2",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Mon Mar 30 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "trenchant",
+                "prenom": "vincent"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 4
+            },
+            "HeuresTotales": {
+                "CM": 4
+            },
+            "Nom": "Math2"
+        },
+        "Horaire": "MATIN2",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Mon Mar 30 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "vincent",
+                "prenom": "trenchant"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 4
+            },
+            "HeuresTotales": {
+                "CM": 4
+            },
+            "Nom": "Math2"
+        },
+        "Horaire": "APRESMIDI2",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "TD"
+    }
+]

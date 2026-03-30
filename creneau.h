@@ -29,6 +29,8 @@ public:
     Creneau(eHoraire horaire, QDate date, Ecue ecue, eTypeCours typeCours, Salle salle);
 
     //Getter Setter To_String
+    QDate getDate() const;
+    void setDate(const QDate &newDate);
     eHoraire getHoraire() const;
     void setHoraire(eHoraire newHoraire);
     Ecue getEcue() const;
