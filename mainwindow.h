@@ -20,6 +20,8 @@
 #include "controleur_enseignant.h"
 #include "controleur_ecue.h"
 #include "emploidutempsdialog.h"
+#include "controleur_creneau.h"
+#include "creneau.h"
 #include <QGroupBox>
 #include <QGroupBox>
 #include <QTabWidget>
@@ -55,6 +57,10 @@ private slots:
     void on_btnAjouterEcue_clicked();
     void on_btnSupprimerEcue_clicked();
     void on_btnAfficherEcues_clicked();
+
+    void on_btnAjouterCreneau_clicked();
+    void on_btnSupprimerCreneau_clicked();
+    void on_btnAfficherCreneaux_clicked();
 
 private:
     Ui::MainWindow *ui;

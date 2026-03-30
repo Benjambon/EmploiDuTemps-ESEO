@@ -1,5 +1,7 @@
 #include "emploidutempsdialog.h"
 #include <QHeaderView>
+#include <QBrush>
+#include <QColor>
 
 EmploiDuTempsDialog::EmploiDuTempsDialog(QString dataPath, QWidget *parent)
     : QWidget(parent), m_dataPath(dataPath)
@@ -15,14 +17,18 @@ EmploiDuTempsDialog::EmploiDuTempsDialog(QString dataPath, QWidget *parent)
     this->init_slots();
 
     this->majAffichageSemaine();
-    this->radioGroupe->setChecked(true);
+    this->radioGroupe->setChecked(true); // Déclenche le remplissage initial
 }
 
 void EmploiDuTempsDialog::chargerDonnees()
 {
     this->listeEnseignants = Enseignant::readFromJSON(m_dataPath + "enseignants.json");
     this->listeGroupes = GroupeEtudiant::readFromJSON(m_dataPath + "groupes.json");
+    // On charge les créneaux à chaque fois pour avoir les données les plus récentes
+    this->listeCreneaux = Creneau::readFromJSON(m_dataPath + "creneaux.json");
 }
+
+// ... garde init_components, init_layout, et init_slots intacts ...
 
 void EmploiDuTempsDialog::init_components()
 {
@@ -92,6 +98,7 @@ void EmploiDuTempsDialog::init_slots()
     connect(this->comboSelection, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &EmploiDuTempsDialog::on_comboSelection_currentIndexChanged);
 }
 
+
 void EmploiDuTempsDialog::majAffichageSemaine()
 {
     int weekNum = this->dateLundiCourant.weekNumber();
@@ -102,10 +109,14 @@ void EmploiDuTempsDialog::majAffichageSemaine()
 
     for (int i = 0; i < 5; ++i) {
         QDate dateDuJour = this->dateLundiCourant.addDays(i);
-        QString texteColonne = nomsJours[i] + " " + dateDuJour.toString("dd/MM");
+        QString texteColonne = nomsJours[i] + "\n" + dateDuJour.toString("dd/MM");
         headers << texteColonne;
     }
     this->tableCalendrier->setHorizontalHeaderLabels(headers);
+
+    // On recharge les données et on met à jour la grille lors d'un changement de semaine
+    this->chargerDonnees();
+    this->majEmploiDuTemps();
 }
 
 void EmploiDuTempsDialog::on_radio_toggled()
@@ -130,6 +141,9 @@ void EmploiDuTempsDialog::on_radio_toggled()
 void EmploiDuTempsDialog::on_comboSelection_currentIndexChanged(int index)
 {
     Q_UNUSED(index);
+    // Recharge les données pour s'assurer d'avoir les créneaux récemment créés
+    this->chargerDonnees();
+    this->majEmploiDuTemps();
 }
 
 void EmploiDuTempsDialog::on_btnSemainePrecedente_clicked()
@@ -142,4 +156,78 @@ void EmploiDuTempsDialog::on_btnSemaineSuivante_clicked()
 {
     this->dateLundiCourant = this->dateLundiCourant.addDays(7);
     this->majAffichageSemaine();
+}
+
+// Nouvelle méthode pour vider et remplir la grille
+void EmploiDuTempsDialog::majEmploiDuTemps()
+{
+    // 1. Vider le tableau (sauf la ligne de pause déjeuner)
+    for (int row = 0; row < 5; ++row) {
+        if (row == 2) continue; // On ne touche pas à la pause
+        for (int col = 0; col < 5; ++col) {
+            this->tableCalendrier->setItem(row, col, new QTableWidgetItem(""));
+        }
+    }
+
+    int currentIndex = this->comboSelection->currentIndex();
+    if (currentIndex < 0) return;
+
+    bool isGroupe = this->radioGroupe->isChecked();
+    QString filtreNom;
+    QString filtrePrenom;
+
+    // Définition du filtre de recherche (nom de groupe ou nom/prénom d'enseignant)
+    if (isGroupe && currentIndex < static_cast<int>(this->listeGroupes.size())) {
+        filtreNom = QString::fromStdString(this->listeGroupes[currentIndex].getNom());
+    } else if (!isGroupe && currentIndex < static_cast<int>(this->listeEnseignants.size())) {
+        filtreNom = QString::fromStdString(this->listeEnseignants[currentIndex].getNom());
+        filtrePrenom = QString::fromStdString(this->listeEnseignants[currentIndex].getPrenom());
+    }
+
+    // 2. Parcourir et placer les créneaux
+    for (const Creneau& c : this->listeCreneaux) {
+        // Filtrage par entité (vérifie si le créneau concerne la personne/groupe affiché)
+        if (isGroupe) {
+            if (QString::fromStdString(c.getEcue().getGroupeEtudiant().getNom()) != filtreNom) continue;
+        } else {
+            if (QString::fromStdString(c.getEcue().getEnseignant().getNom()) != filtreNom ||
+                QString::fromStdString(c.getEcue().getEnseignant().getPrenom()) != filtrePrenom) continue;
+        }
+
+        // Filtrage par semaine
+        int joursDifference = this->dateLundiCourant.daysTo(c.getDate());
+        if (joursDifference < 0 || joursDifference > 4) continue; // Pas cette semaine (ou le week-end)
+
+        // Détermination de la ligne en fonction de l'horaire
+        int row = -1;
+        switch(c.getHoraire()) {
+        case eHoraire::MATIN1: row = 0; break;
+        case eHoraire::MATIN2: row = 1; break;
+        case eHoraire::APRESMIDI1: row = 3; break;
+        case eHoraire::APRESMIDI2: row = 4; break;
+        default: break;
+        }
+
+        if (row != -1) {
+            // Construction du texte de la cellule
+            QString texte = QString::fromStdString(c.getEcue().getNom()) + "\n" +
+                            Ecue::typeCoursToString(c.getTypeCours()) + " - Salle " +
+                            QString::fromStdString(c.getSalle().getNumero());
+
+            // Si affiché par enseignant, on montre avec quel groupe il est, et vice-versa
+            if (isGroupe) {
+                texte += "\n" + QString::fromStdString(c.getEcue().getEnseignant().getNom());
+            } else {
+                texte += "\nGroupe " + QString::fromStdString(c.getEcue().getGroupeEtudiant().getNom());
+            }
+
+            QTableWidgetItem* item = new QTableWidgetItem(texte);
+            item->setTextAlignment(Qt::AlignCenter);
+
+            // Code couleur léger pour les cases remplies
+            item->setBackground(QBrush(QColor(235, 245, 251)));
+
+            this->tableCalendrier->setItem(row, joursDifference, item);
+        }
+    }
 }

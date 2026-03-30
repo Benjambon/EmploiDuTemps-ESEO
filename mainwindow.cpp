@@ -125,6 +125,28 @@ void MainWindow::init_layout(void)
     groupeEcue->setLayout(layoutEcu);
     layoutPrincipal->addWidget(groupeEcue);
 
+    // Ajout dynamique des boutons Créneau (pour éviter de toucher au fichier .ui)
+    QPushButton *btnAjouterCreneau = new QPushButton(txtAjouter, this);
+    QPushButton *btnSupprimerCreneau = new QPushButton(txtSupprimer, this);
+    QPushButton *btnAfficherCreneaux = new QPushButton(txtAfficher, this);
+
+    btnAjouterCreneau->setIcon(iconAjouter);
+    btnSupprimerCreneau->setIcon(iconSupprimer);
+    btnAfficherCreneaux->setIcon(iconAfficher);
+
+    QGroupBox *groupeCreneau = new QGroupBox("Créneaux");
+    QHBoxLayout *layoutCreneau = new QHBoxLayout;
+    layoutCreneau->addWidget(btnAjouterCreneau);
+    layoutCreneau->addWidget(btnSupprimerCreneau);
+    layoutCreneau->addWidget(btnAfficherCreneaux);
+    groupeCreneau->setLayout(layoutCreneau);
+    layoutPrincipal->addWidget(groupeCreneau);
+
+    // Connexion manuelle des signaux pour ces boutons générés
+    connect(btnAjouterCreneau, &QPushButton::clicked, this, &MainWindow::on_btnAjouterCreneau_clicked);
+    connect(btnSupprimerCreneau, &QPushButton::clicked, this, &MainWindow::on_btnSupprimerCreneau_clicked);
+    connect(btnAfficherCreneaux, &QPushButton::clicked, this, &MainWindow::on_btnAfficherCreneaux_clicked);
+
     layoutPrincipal->addStretch();
     systemeOnglets->addTab(ongletGestion, "Gestion des données");
 
@@ -378,52 +400,122 @@ void MainWindow::on_btnSupprimerEcue_clicked()
 
 void MainWindow::on_btnAfficherEcues_clicked()
 {
-    QString fichierJson = m_dataPath + "ecue.json";
-    std::vector<Ecue> liste = Ecue::readFromJSON(fichierJson);
+    QString cheminEcue = m_dataPath + "ecue.json";
+    QString cheminCreneaux = m_dataPath + "creneaux.json";
 
-    if (liste.empty()) {
-        QMessageBox::information(this, "Liste des ECUE", "Aucun ECUE n'est enregistré.");
+    std::vector<Ecue> listeE = Ecue::readFromJSON(cheminEcue);
+    std::vector<Creneau> listeC = Creneau::readFromJSON(cheminCreneaux);
+
+    if (listeE.empty()) {
+        QMessageBox::information(this, "Liste des ECUEs", "Aucun ECUE n'est enregistré.");
         return;
     }
 
-    QString texteAffichage = "<h3>Liste des ECUE</h3>";
-    texteAffichage += "<table border='1' cellspacing='0' cellpadding='5' style='border-collapse: collapse;'>";
-    texteAffichage += "<tr bgcolor='#f0f0f0'>";
-    texteAffichage += "<th>Nom</th><th>Groupe</th><th>Enseignant</th><th>Détail des heures (Rest. / Tot.)</th>";
-    texteAffichage += "</tr>";
+    QString texteAffichage = "Voici la liste des ECUEs et leurs heures restantes :\n\n";
 
-    for (size_t i = 0; i < liste.size(); ++i) {
-        QString nom = QString::fromStdString(liste[i].getNom());
-        QString groupe = QString::fromStdString(liste[i].getGroupeEtudiant().getNom());
-        QString prof = QString::fromStdString(liste[i].getEnseignant().getNom());
+    for (size_t i = 0; i < listeE.size(); ++i) {
+        Ecue currentEcue = listeE[i];
 
-        // Création de la chaîne de détail des heures
-        QString heuresStr = "";
-        std::map<eTypeCours, int> totales = liste[i].getHeuresTotales();
-        std::map<eTypeCours, int> restantes = liste[i].getHeuresRestantes();
+        // Map pour accumuler les heures consommées par type de cours pour cet ECUE
+        std::map<eTypeCours, int> heuresConsommees;
 
-        for (auto const& pair : totales) {
-            QString typeNom = Ecue::typeCoursToString(pair.first);
-            QString total = QString::number(pair.second);
-            QString restant = QString::number(restantes[pair.first]);
-
-            heuresStr += "<b>" + typeNom + "</b> : " + restant + "h / " + total + "h<br>";
+        // Parcours des créneaux pour trouver ceux associés à cet ECUE
+        for (size_t j = 0; j < listeC.size(); ++j) {
+            if (listeC[j].getEcue().getNom() == currentEcue.getNom()) {
+                // On ajoute 2 heures au type de cours correspondant
+                heuresConsommees[listeC[j].getTypeCours()] += 2;
+            }
         }
 
-        texteAffichage += "<tr>";
-        texteAffichage += "<td>" + nom + "</td>";
-        texteAffichage += "<td>" + groupe + "</td>";
-        texteAffichage += "<td>" + prof + "</td>";
-        texteAffichage += "<td>" + heuresStr + "</td>";
-        texteAffichage += "</tr>";
+        texteAffichage += QString::fromStdString(currentEcue.getNom()) + " :\n";
+
+        // Récupération des heures totales pour faire la soustraction
+        std::map<eTypeCours, int> totales = currentEcue.getHeuresTotales();
+
+        for (const auto& pair : totales) {
+            eTypeCours type = pair.first;
+            int total = pair.second;
+
+            // Calcul du reste dynamique
+            int reste = total - heuresConsommees[type];
+
+            // Formatage de l'affichage en utilisant la méthode de conversion de ta classe
+            texteAffichage += "  " + Ecue::typeCoursToString(type) + " : "
+                              + QString::number(reste) + "h restantes (sur "
+                              + QString::number(total) + "h)\n";
+        }
+
+        texteAffichage += "\n";
     }
 
-    texteAffichage += "</table>";
+    QMessageBox::information(this, "Liste des ECUEs", texteAffichage);
+}
 
-    QMessageBox msgBox(this);
-    msgBox.setWindowTitle("Liste des ECUE");
-    msgBox.setText(texteAffichage);
-    msgBox.setTextFormat(Qt::RichText);
-    msgBox.exec();
+// --------------------------------------------------------
+// Gestion des Créneaux
+// --------------------------------------------------------
+
+void MainWindow::on_btnAjouterCreneau_clicked()
+{
+    QString fichierJson = m_dataPath + "creneaux.json";
+
+    // Chargement de toutes les données nécessaires
+    std::vector<Ecue> listeE = Ecue::readFromJSON(m_dataPath + "ecue.json");
+    std::vector<Salle> listeS = Salle::readFromJSON(m_dataPath + "salles.json");
+    std::vector<Creneau> listeC = Creneau::readFromJSON(fichierJson);
+
+    if (listeE.empty() || listeS.empty()) {
+        QMessageBox::warning(this, "Erreur", "Il faut au moins un ECUE et une salle pour créer un créneau.");
+        return;
+    }
+
+    // Appel au contrôleur avec la liste des créneaux (listeC) pour la vérification des conflits
+    Creneau* nouveauCreneau = Controleur_creneau::creationCreneau(listeE, listeS, listeC);
+
+    if (nouveauCreneau != nullptr) {
+        // On ajoute le nouveau créneau à la liste existante et on sauvegarde
+        listeC.push_back(*nouveauCreneau);
+        Creneau::writeToJSON(listeC, fichierJson);
+
+        QMessageBox::information(this, "Succès", "Le créneau a été ajouté et sauvegardé.");
+        delete nouveauCreneau;
+    }
+}
+
+void MainWindow::on_btnSupprimerCreneau_clicked()
+{
+    QString fichierJson = m_dataPath + "creneaux.json";
+    std::vector<Creneau> liste = Creneau::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Information", "Il n'y a aucun créneau à supprimer.");
+        return;
+    }
+
+    int index = Controleur_creneau::supprimerCreneau(liste);
+
+    if (index >= 0 && static_cast<size_t>(index) < liste.size()) {
+        liste.erase(liste.begin() + index);
+        Creneau::writeToJSON(liste, fichierJson);
+        QMessageBox::information(this, "Succès", "Le créneau a été supprimé avec succès.");
+    }
+}
+
+void MainWindow::on_btnAfficherCreneaux_clicked()
+{
+    QString fichierJson = m_dataPath + "creneaux.json";
+    std::vector<Creneau> liste = Creneau::readFromJSON(fichierJson);
+
+    if (liste.empty()) {
+        QMessageBox::information(this, "Liste des créneaux", "Aucun créneau n'est enregistré.");
+        return;
+    }
+
+    QString texteAffichage = "Voici la liste des créneaux :\n\n";
+    for (size_t i = 0; i < liste.size(); ++i) {
+        texteAffichage += QString::fromStdString(liste[i].to_string()) + "\n";
+    }
+
+    QMessageBox::information(this, "Liste des créneaux", texteAffichage);
 }
 

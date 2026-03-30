@@ -13,6 +13,7 @@
 #include <vector>
 #include "enseignant.h"
 #include "groupeetudiant.h"
+#include "creneau.h" // Ajout de l'en-tête Creneau
 
 class EmploiDuTempsDialog : public QWidget
 {
@@ -38,12 +39,14 @@ private:
 
     std::vector<Enseignant> listeEnseignants;
     std::vector<GroupeEtudiant> listeGroupes;
+    std::vector<Creneau> listeCreneaux; // Liste pour stocker les créneaux
 
     void init_components();
     void init_layout();
     void init_slots();
     void majAffichageSemaine();
     void chargerDonnees();
+    void majEmploiDuTemps(); // Nouvelle méthode pour remplir la grille
 
 public:
     explicit EmploiDuTempsDialog(QString dataPath, QWidget *parent = nullptr);
