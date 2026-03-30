@@ -49,7 +49,33 @@ Creneau* Controleur_creneau::creationCreneau(const std::vector<Ecue>& listeE, co
             continue;
         }
 
-        // 2. Validation des conflits dans l'emploi du temps
+        // 2. Vérification des quotas d'heures (Évite les heures négatives)
+        int heuresConsommees = 0;
+        for (const Creneau& c : listeC) {
+            if (c.getEcue().getNom() == ecue.getNom() && c.getTypeCours() == typeCours) {
+                heuresConsommees += 2; // Chaque créneau dure 2 heures
+            }
+        }
+
+        std::map<eTypeCours, int> mapTotales = ecue.getHeuresTotales();
+        int quotaTotal = 0;
+        if (mapTotales.find(typeCours) != mapTotales.end()) {
+            quotaTotal = mapTotales[typeCours];
+        }
+
+        if (quotaTotal == 0) {
+            QMessageBox::warning(&dialog, "Erreur de quota", "Ce type de cours (" + Ecue::typeCoursToString(typeCours) + ") n'est pas prévu au programme de cet ECUE.");
+            continue;
+        }
+
+        if (heuresConsommees + 2 > quotaTotal) {
+            QMessageBox::warning(&dialog, "Erreur de quota", "Le quota d'heures pour ce type de cours est atteint.\n("
+                                                                 + QString::number(heuresConsommees) + "h déjà placées sur "
+                                                                 + QString::number(quotaTotal) + "h au total).");
+            continue;
+        }
+
+        // 3. Validation des conflits dans l'emploi du temps
         bool conflit = false;
         QString msgConflit = "";
 

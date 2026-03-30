@@ -24,9 +24,15 @@ private:
     QDialogButtonBox* buttonBox;
     QFormLayout* formlayout;
 
+    std::vector<Ecue> m_listeE;
+
     void init_components(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS);
     void init_layout(void);
     void init_slots(void);
+    void updateTypeCoursCombo(int ecueIndex);
+
+private slots:
+    void on_comboEcue_currentIndexChanged(int index);
 
 public:
     CreneauDialog(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS, QWidget *parent = nullptr);

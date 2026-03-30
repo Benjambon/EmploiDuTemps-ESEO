@@ -1,11 +1,16 @@
 #include "creneaudialog.h"
 
-CreneauDialog::CreneauDialog(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS, QWidget *parent) : QDialog(parent)
+CreneauDialog::CreneauDialog(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS, QWidget *parent)
+    : QDialog(parent), m_listeE(listeE)
 {
     this->setWindowTitle("Ajouter un Créneau");
     this->init_components(listeE, listeS);
     this->init_layout();
     this->init_slots();
+
+    if (!m_listeE.empty()) {
+        this->updateTypeCoursCombo(0);
+    }
 }
 
 void CreneauDialog::init_components(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS)
@@ -25,13 +30,6 @@ void CreneauDialog::init_components(const std::vector<Ecue>& listeE, const std::
     }
 
     this->comboTypeCours = new QComboBox(this);
-    this->comboTypeCours->addItem("CM", static_cast<int>(eTypeCours::CM));
-    this->comboTypeCours->addItem("TD", static_cast<int>(eTypeCours::TD));
-    this->comboTypeCours->addItem("TP Info", static_cast<int>(eTypeCours::TP_INFO));
-    this->comboTypeCours->addItem("TP Elec", static_cast<int>(eTypeCours::TP_ELEC));
-    this->comboTypeCours->addItem("Exam Salle", static_cast<int>(eTypeCours::EXAMEN_EN_SALLE));
-    this->comboTypeCours->addItem("Exam Info", static_cast<int>(eTypeCours::EXAMEN_INFO));
-    this->comboTypeCours->addItem("Exam Elec", static_cast<int>(eTypeCours::EXAMEN_ELEC));
 
     this->comboSalle = new QComboBox(this);
     for (size_t i = 0; i < listeS.size(); ++i) {
@@ -56,10 +54,37 @@ void CreneauDialog::init_slots(void)
 {
     connect(this->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(this->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+
+    connect(this->comboEcue, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &CreneauDialog::on_comboEcue_currentIndexChanged);
+}
+
+void CreneauDialog::updateTypeCoursCombo(int ecueIndex)
+{
+    this->comboTypeCours->clear();
+
+    if (ecueIndex >= 0 && static_cast<size_t>(ecueIndex) < m_listeE.size()) {
+        Ecue ecueSelectionne = m_listeE[ecueIndex];
+        std::map<eTypeCours, int> heures = ecueSelectionne.getHeuresTotales();
+
+        for (const auto& pair : heures) {
+            if (pair.second > 0) {
+                QString nomType = Ecue::typeCoursToString(pair.first);
+                this->comboTypeCours->addItem(nomType, static_cast<int>(pair.first));
+            }
+        }
+    }
+}
+
+void CreneauDialog::on_comboEcue_currentIndexChanged(int index)
+{
+    this->updateTypeCoursCombo(index);
 }
 
 QDate CreneauDialog::getDate(void) const { return this->editDate->date(); }
 eHoraire CreneauDialog::getHoraire(void) const { return static_cast<eHoraire>(this->comboHoraire->currentData().toInt()); }
 int CreneauDialog::getEcueIndex(void) const { return this->comboEcue->currentData().toInt(); }
-eTypeCours CreneauDialog::getTypeCours(void) const { return static_cast<eTypeCours>(this->comboTypeCours->currentData().toInt()); }
+eTypeCours CreneauDialog::getTypeCours(void) const {
+    if (this->comboTypeCours->currentIndex() == -1) return eTypeCours::DEFAULT;
+    return static_cast<eTypeCours>(this->comboTypeCours->currentData().toInt());
+}
 int CreneauDialog::getSalleIndex(void) const { return this->comboSalle->currentData().toInt(); }
