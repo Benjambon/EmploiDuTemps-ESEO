@@ -457,22 +457,25 @@ void MainWindow::on_btnAfficherEcues_clicked()
 
 void MainWindow::on_btnAjouterCreneau_clicked()
 {
+    QString fichierJson = m_dataPath + "creneaux.json";
+
+    // Chargement de toutes les données nécessaires
     std::vector<Ecue> listeE = Ecue::readFromJSON(m_dataPath + "ecue.json");
     std::vector<Salle> listeS = Salle::readFromJSON(m_dataPath + "salles.json");
+    std::vector<Creneau> listeC = Creneau::readFromJSON(fichierJson);
 
     if (listeE.empty() || listeS.empty()) {
         QMessageBox::warning(this, "Erreur", "Il faut au moins un ECUE et une salle pour créer un créneau.");
         return;
     }
 
-    Creneau* nouveauCreneau = Controleur_creneau::creationCreneau(listeE, listeS);
+    // Appel au contrôleur avec la liste des créneaux (listeC) pour la vérification des conflits
+    Creneau* nouveauCreneau = Controleur_creneau::creationCreneau(listeE, listeS, listeC);
 
     if (nouveauCreneau != nullptr) {
-        QString fichierJson = m_dataPath + "creneaux.json";
-        std::vector<Creneau> liste = Creneau::readFromJSON(fichierJson);
-
-        liste.push_back(*nouveauCreneau);
-        Creneau::writeToJSON(liste, fichierJson);
+        // On ajoute le nouveau créneau à la liste existante et on sauvegarde
+        listeC.push_back(*nouveauCreneau);
+        Creneau::writeToJSON(listeC, fichierJson);
 
         QMessageBox::information(this, "Succès", "Le créneau a été ajouté et sauvegardé.");
         delete nouveauCreneau;

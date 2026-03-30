@@ -132,7 +132,7 @@ QGroupBox::title {
 /* ========================================================= */
 /* --- Champs de texte et compteurs --- */
 /* ========================================================= */
-QLineEdit, QSpinBox {
+QLineEdit, QSpinBox, QDateEdit {
     background-color: #FFFFFF;
     border: 1px solid #BDC3C7;
     border-radius: 4px;
@@ -141,7 +141,7 @@ QLineEdit, QSpinBox {
     selection-background-color: #3498DB;
 }
 
-QLineEdit:focus, QSpinBox:focus {
+QLineEdit:focus, QSpinBox:focus, QDateEdit:focus {
     border: 2px solid #3498DB;
     padding: 5px; /* Compense la bordure plus épaisse */
 }
@@ -246,4 +246,75 @@ QDialog {
 /* Titres dans les formulaires */
 QLabel {
     background-color: transparent;
+}
+
+/* ========================================================= */
+/* --- Sélecteur de date (QDateEdit et Calendrier) --- */
+/* ========================================================= */
+
+/* La zone du bouton à droite (contenant la flèche) */
+QDateEdit::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border-left: 2px solid #BDC3C7;
+    background-color: #F5F7FA;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+/* Le séparateur devient bleu quand on interagit */
+QDateEdit:hover::drop-down, QDateEdit:focus::drop-down {
+    border-left: 2px solid #3498DB;
+    background-color: #EBF5FB;
+}
+
+/* Ajouter la flèche au bouton déroulant */
+QDateEdit::down-arrow {
+    image: url(:/icons/down.svg);
+    width: 14px;
+    height: 14px;
+}
+
+/* --- Le calendrier popup (QCalendarWidget) --- */
+
+/* Arrière-plan de l'en-tête et des conteneurs */
+QCalendarWidget QWidget {
+    alternate-background-color: #F9FAFC;
+    background-color: #FFFFFF;
+}
+
+/* Boutons de navigation (Mois précédent/suivant, Année) */
+QCalendarWidget QToolButton {
+    color: #2C3E50;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+QCalendarWidget QToolButton:hover {
+    background-color: #ECF0F1;
+}
+
+/* Menu de sélection rapide des mois */
+QCalendarWidget QMenu {
+    background-color: #FFFFFF;
+    border: 2px solid #3498DB;
+    color: #2C3E50;
+}
+
+/* Grille des jours */
+QCalendarWidget QAbstractItemView:enabled {
+    color: #2C3E50;
+    background-color: #FFFFFF;
+    selection-background-color: #3498DB;
+    selection-color: white;
+    outline: none; /* Supprime les pointillés Windows */
+}
+
+/* Jours inactifs (mois précédent/suivant) */
+QCalendarWidget QAbstractItemView:disabled {
+    color: #BDC3C7;
 }

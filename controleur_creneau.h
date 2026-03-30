@@ -11,7 +11,9 @@ class Controleur_creneau
 public:
     Controleur_creneau();
 
-    static Creneau* creationCreneau(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS);
+
+    static Creneau* creationCreneau(const std::vector<Ecue>& listeE, const std::vector<Salle>& listeS, const std::vector<Creneau>& listeC);
+
     static int supprimerCreneau(const std::vector<Creneau>& listeCreneaux);
 };
 

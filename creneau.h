@@ -11,24 +11,25 @@ enum eHoraire { MATIN1, MATIN2, APRESMIDI1, APRESMIDI2, NONDEFINIT };
 class Creneau
 {
 public:
-
-    // Déclaration complète et propre des codes d'erreur
+    // Déclaration standardisée des codes d'erreur
     enum code_erreur_horaire { HORAIRE_OK, HORAIRE_NONDEFINIT };
-    enum code_erreur_date { DATE_OK, DATE_NULLE, DATE_INVALIDE };
+    enum code_erreur_date { DATE_OK, DATE_NULLE, DATE_INVALIDE, DATE_WEEKEND };
     enum code_erreur_typeCours { TYPECOURS_OK, TYPECOURS_NONDEFINIT };
+    enum code_erreur_ecue { ECUE_OK, ECUE_NONDEFINIT };
+    enum code_erreur_salle { SALLE_OK, SALLE_NONDEFINIT };
 
-    //Attributs
+    // Attributs
     eHoraire horaire;
     QDate date;
     Ecue ecue;
     eTypeCours typeCours;
     Salle salle;
 
-    //Constructeurs
+    // Constructeurs
     Creneau();
     Creneau(eHoraire horaire, QDate date, Ecue ecue, eTypeCours typeCours, Salle salle);
 
-    //Getter Setter To_String
+    // Getter Setter To_String
     QDate getDate() const;
     void setDate(const QDate &newDate);
     eHoraire getHoraire() const;
@@ -41,18 +42,20 @@ public:
     void setSalle(const Salle &newSalle);
     std::string to_string() const;
 
-    //Méthodes de validation que j'ai rajoutées
+    // Méthodes de validation standardisées
     code_erreur_horaire isHoraireValid() const;
     code_erreur_date isDateValid() const;
     code_erreur_typeCours isTypeCoursValid() const;
+    code_erreur_ecue isEcueValid() const;
+    code_erreur_salle isSalleValid() const;
 
-    //Json
+    // Json
     QJsonObject toJSON() const;
     static Creneau fromJSON(QJsonObject json);
     static void writeToJSON(std::vector<Creneau> vector, QString filepath);
     static std::vector<Creneau> readFromJSON(QString filepath);
 
-    //Méthodes
+    // Méthodes
     static QString horaireToString(eHoraire horaire);
     static eHoraire stringToHoraire(QString str);
 };
