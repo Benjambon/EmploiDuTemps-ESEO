@@ -54,5 +54,121 @@
             "typeSalle": 0
         },
         "typeCours": "TD"
+    },
+    {
+        "Date": "Wed Apr 1 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "trenchant",
+                "prenom": "vincent"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 4
+            },
+            "HeuresTotales": {
+                "CM": 4
+            },
+            "Nom": "Math2"
+        },
+        "Horaire": "MATIN1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Mon Mar 30 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "vincent",
+                "prenom": "trenchant"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 8,
+                "EXAMEN_EN_SALLE": 2,
+                "TD": 6
+            },
+            "HeuresTotales": {
+                "CM": 8,
+                "EXAMEN_EN_SALLE": 2,
+                "TD": 6
+            },
+            "Nom": "Signaux et Systemes"
+        },
+        "Horaire": "MATIN1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Mon Mar 30 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "trenchant",
+                "prenom": "vincent"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 8,
+                "EXAMEN_EN_SALLE": 2,
+                "TD": 6
+            },
+            "HeuresTotales": {
+                "CM": 8,
+                "EXAMEN_EN_SALLE": 2,
+                "TD": 6
+            },
+            "Nom": "Signaux et Systemes"
+        },
+        "Horaire": "APRESMIDI1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Tue Mar 31 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "vincent.trenchant@eseo.fr",
+                "nom": "vincent",
+                "prenom": "trenchant"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 8,
+                "EXAMEN_EN_SALLE": 2,
+                "TD": 6
+            },
+            "HeuresTotales": {
+                "CM": 8,
+                "EXAMEN_EN_SALLE": 2,
+                "TD": 6
+            },
+            "Nom": "Signaux et Systemes"
+        },
+        "Horaire": "MATIN1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "TD"
     }
 ]
