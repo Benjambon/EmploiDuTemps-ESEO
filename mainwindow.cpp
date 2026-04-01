@@ -125,27 +125,23 @@ void MainWindow::init_layout(void)
     groupeEcue->setLayout(layoutEcu);
     layoutPrincipal->addWidget(groupeEcue);
 
-    // Ajout dynamique des boutons Créneau (pour éviter de toucher au fichier .ui)
+    // Ajout dynamique des boutons Créneau
     QPushButton *btnAjouterCreneau = new QPushButton(txtAjouter, this);
     QPushButton *btnSupprimerCreneau = new QPushButton(txtSupprimer, this);
-    QPushButton *btnAfficherCreneaux = new QPushButton(txtAfficher, this);
 
     btnAjouterCreneau->setIcon(iconAjouter);
     btnSupprimerCreneau->setIcon(iconSupprimer);
-    btnAfficherCreneaux->setIcon(iconAfficher);
 
     QGroupBox *groupeCreneau = new QGroupBox("Créneaux");
     QHBoxLayout *layoutCreneau = new QHBoxLayout;
     layoutCreneau->addWidget(btnAjouterCreneau);
     layoutCreneau->addWidget(btnSupprimerCreneau);
-    layoutCreneau->addWidget(btnAfficherCreneaux);
     groupeCreneau->setLayout(layoutCreneau);
     layoutPrincipal->addWidget(groupeCreneau);
 
-    // Connexion manuelle des signaux pour ces boutons générés
+    // Connexion manuelle des signaux
     connect(btnAjouterCreneau, &QPushButton::clicked, this, &MainWindow::on_btnAjouterCreneau_clicked);
     connect(btnSupprimerCreneau, &QPushButton::clicked, this, &MainWindow::on_btnSupprimerCreneau_clicked);
-    connect(btnAfficherCreneaux, &QPushButton::clicked, this, &MainWindow::on_btnAfficherCreneaux_clicked);
 
     layoutPrincipal->addStretch();
     systemeOnglets->addTab(ongletGestion, "Gestion des données");
@@ -156,12 +152,19 @@ void MainWindow::init_layout(void)
     QWidget *ongletEmploi = new QWidget();
     QVBoxLayout *layoutEmploi = new QVBoxLayout(ongletEmploi);
 
-    // Intégration de votre boîte de dialogue
-    EmploiDuTempsDialog *interfaceEmploi = new EmploiDuTempsDialog(m_dataPath, ongletEmploi);
-    interfaceEmploi->setWindowFlags(Qt::Widget);
-    layoutEmploi->addWidget(interfaceEmploi);
+    // Utilisation de l'attribut de classe au lieu d'une variable locale
+    m_interfaceEmploi = new EmploiDuTempsDialog(m_dataPath, ongletEmploi);
+    m_interfaceEmploi->setWindowFlags(Qt::Widget);
+    layoutEmploi->addWidget(m_interfaceEmploi);
 
     systemeOnglets->addTab(ongletEmploi, "Emploi du temps");
+
+    connect(systemeOnglets, &QTabWidget::currentChanged, this, [this](int index) {
+        // L'index 1 correspond au deuxième onglet ("Emploi du temps")
+        if (index == 1 && m_interfaceEmploi) {
+            m_interfaceEmploi->rafraichir();
+        }
+    });
 
     // ==========================================
     // APPLICATION À LA FENÊTRE
@@ -411,44 +414,73 @@ void MainWindow::on_btnAfficherEcues_clicked()
         return;
     }
 
-    QString texteAffichage = "Voici la liste des ECUEs et leurs heures restantes :\n\n";
+    QDialog dialog(this);
+    dialog.setWindowTitle("Détails des ECUEs");
+    dialog.resize(950, 400);
+
+    QVBoxLayout layout(&dialog);
+    QTableWidget table(listeE.size(), 10, &dialog);
+
+    table.setHorizontalHeaderLabels({
+        "Nom", "Enseignant", "Groupe",
+        "CM", "TD", "TP Info", "TP Elec",
+        "Exam Salle", "Exam Info", "Exam Elec"
+    });
 
     for (size_t i = 0; i < listeE.size(); ++i) {
         Ecue currentEcue = listeE[i];
-
-        // Map pour accumuler les heures consommées par type de cours pour cet ECUE
         std::map<eTypeCours, int> heuresConsommees;
 
-        // Parcours des créneaux pour trouver ceux associés à cet ECUE
         for (size_t j = 0; j < listeC.size(); ++j) {
             if (listeC[j].getEcue().getNom() == currentEcue.getNom()) {
-                // On ajoute 2 heures au type de cours correspondant
                 heuresConsommees[listeC[j].getTypeCours()] += 2;
             }
         }
 
-        texteAffichage += QString::fromStdString(currentEcue.getNom()) + " :\n";
-
-        // Récupération des heures totales pour faire la soustraction
         std::map<eTypeCours, int> totales = currentEcue.getHeuresTotales();
 
-        for (const auto& pair : totales) {
-            eTypeCours type = pair.first;
-            int total = pair.second;
+        table.setItem(i, 0, new QTableWidgetItem(QString::fromStdString(currentEcue.getNom())));
+        table.setItem(i, 1, new QTableWidgetItem(QString::fromStdString(currentEcue.getEnseignant().getNom())));
+        table.setItem(i, 2, new QTableWidgetItem(QString::fromStdString(currentEcue.getGroupeEtudiant().getNom())));
 
-            // Calcul du reste dynamique
-            int reste = total - heuresConsommees[type];
+        // Fonction lambda pour formater l'affichage des heures (Restantes / Totales)
+        auto formatHeure = [&](eTypeCours type) {
+            int tot = totales[type];
+            if (tot == 0) return QString("-");
+            int rest = tot - heuresConsommees[type];
+            return QString("%1h / %2h").arg(rest).arg(tot);
+        };
 
-            // Formatage de l'affichage en utilisant la méthode de conversion de ta classe
-            texteAffichage += "  " + Ecue::typeCoursToString(type) + " : "
-                              + QString::number(reste) + "h restantes (sur "
-                              + QString::number(total) + "h)\n";
+        table.setItem(i, 3, new QTableWidgetItem(formatHeure(eTypeCours::CM)));
+        table.setItem(i, 4, new QTableWidgetItem(formatHeure(eTypeCours::TD)));
+        table.setItem(i, 5, new QTableWidgetItem(formatHeure(eTypeCours::TP_INFO)));
+        table.setItem(i, 6, new QTableWidgetItem(formatHeure(eTypeCours::TP_ELEC)));
+        table.setItem(i, 7, new QTableWidgetItem(formatHeure(eTypeCours::EXAMEN_EN_SALLE)));
+        table.setItem(i, 8, new QTableWidgetItem(formatHeure(eTypeCours::EXAMEN_INFO)));
+        table.setItem(i, 9, new QTableWidgetItem(formatHeure(eTypeCours::EXAMEN_ELEC)));
+
+        // Centrage du texte pour les colonnes contenant les heures
+        for(int col = 3; col <= 9; ++col) {
+            if(table.item(i, col)) {
+                table.item(i, col)->setTextAlignment(Qt::AlignCenter);
+            }
         }
-
-        texteAffichage += "\n";
     }
 
-    QMessageBox::information(this, "Liste des ECUEs", texteAffichage);
+    // Ajustement de la taille des colonnes pour une meilleure lisibilité
+    table.horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table.horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    table.horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+    table.horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+    table.setEditTriggers(QAbstractItemView::NoEditTriggers); // Rend le tableau en lecture seule
+
+    layout.addWidget(&table);
+
+    QPushButton btnFermer("Fermer", &dialog);
+    layout.addWidget(&btnFermer);
+    connect(&btnFermer, &QPushButton::clicked, &dialog, &QDialog::accept);
+
+    dialog.exec();
 }
 
 // --------------------------------------------------------
@@ -501,21 +533,5 @@ void MainWindow::on_btnSupprimerCreneau_clicked()
     }
 }
 
-void MainWindow::on_btnAfficherCreneaux_clicked()
-{
-    QString fichierJson = m_dataPath + "creneaux.json";
-    std::vector<Creneau> liste = Creneau::readFromJSON(fichierJson);
 
-    if (liste.empty()) {
-        QMessageBox::information(this, "Liste des créneaux", "Aucun créneau n'est enregistré.");
-        return;
-    }
-
-    QString texteAffichage = "Voici la liste des créneaux :\n\n";
-    for (size_t i = 0; i < liste.size(); ++i) {
-        texteAffichage += QString::fromStdString(liste[i].to_string()) + "\n";
-    }
-
-    QMessageBox::information(this, "Liste des créneaux", texteAffichage);
-}
 

@@ -26,6 +26,8 @@
 #include <QGroupBox>
 #include <QTabWidget>
 #include <QIcon>
+#include <QTableWidget>
+#include <QHeaderView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -60,11 +62,12 @@ private slots:
 
     void on_btnAjouterCreneau_clicked();
     void on_btnSupprimerCreneau_clicked();
-    void on_btnAfficherCreneaux_clicked();
+
 
 private:
     Ui::MainWindow *ui;
     QString m_dataPath;
+    EmploiDuTempsDialog* m_interfaceEmploi;
     void init_style(void);
     void init_layout(void);
 };

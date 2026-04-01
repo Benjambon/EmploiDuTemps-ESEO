@@ -39,17 +39,18 @@ private:
 
     std::vector<Enseignant> listeEnseignants;
     std::vector<GroupeEtudiant> listeGroupes;
-    std::vector<Creneau> listeCreneaux; // Liste pour stocker les créneaux
+    std::vector<Creneau> listeCreneaux;
 
     void init_components();
     void init_layout();
     void init_slots();
     void majAffichageSemaine();
     void chargerDonnees();
-    void majEmploiDuTemps(); // Nouvelle méthode pour remplir la grille
+    void majEmploiDuTemps();
 
 public:
     explicit EmploiDuTempsDialog(QString dataPath, QWidget *parent = nullptr);
+    void rafraichir();
 
 private slots:
     void on_btnSemainePrecedente_clicked();

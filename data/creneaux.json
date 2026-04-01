@@ -1,0 +1,58 @@
+[
+    {
+        "Date": "Wed Apr 1 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "Lucas.Morlet@eseo.fr",
+                "nom": "Lucas",
+                "prenom": "Morlet"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 10,
+                "TD": 6
+            },
+            "HeuresTotales": {
+                "CM": 10,
+                "TD": 6
+            },
+            "Nom": "Data Visualisation"
+        },
+        "Horaire": "MATIN1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    },
+    {
+        "Date": "Wed Apr 1 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "Lucas.Morlet@eseo.fr",
+                "nom": "Morlet",
+                "prenom": "Lucas"
+            },
+            "GroupeEtudiant": {
+                "nom": "E4"
+            },
+            "HeuresRestantes": {
+                "CM": 10,
+                "TD": 6
+            },
+            "HeuresTotales": {
+                "CM": 10,
+                "TD": 6
+            },
+            "Nom": "Data Visualisation"
+        },
+        "Horaire": "MATIN2",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
+    }
+]

@@ -231,3 +231,24 @@ void EmploiDuTempsDialog::majEmploiDuTemps()
         }
     }
 }
+void EmploiDuTempsDialog::rafraichir()
+{
+    // 1. Recharger les données depuis les fichiers JSON
+    this->chargerDonnees();
+
+    // 2. Sauvegarder l'élément actuellement sélectionné
+    int indexSauvegarde = this->comboSelection->currentIndex();
+
+    // 3. Mettre à jour la liste déroulante sans déclencher d'événements intempestifs
+    this->comboSelection->blockSignals(true);
+    this->on_radio_toggled();
+    this->comboSelection->blockSignals(false);
+
+    // 4. Restaurer la sélection si elle existe toujours
+    if (indexSauvegarde >= 0 && indexSauvegarde < this->comboSelection->count()) {
+        this->comboSelection->setCurrentIndex(indexSauvegarde);
+    }
+
+    // 5. Forcer le redessin du tableau
+    this->majEmploiDuTemps();
+}
