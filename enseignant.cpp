@@ -122,7 +122,7 @@ Enseignant Enseignant::fromJSON(QJsonObject json){
     if (it.value().isNull() ) { qDebug() << "Le 'mail' est null" ;}
     std::string mail = it.value().toString().toStdString() ;
 
-    return Enseignant(prenom, nom, mail);
+    return Enseignant(nom, prenom, mail);
 }
 
 void Enseignant::writeToJSON(std::vector<Enseignant> vector, QString filepath){

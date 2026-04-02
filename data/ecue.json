@@ -1,0 +1,21 @@
+[
+    {
+        "Enseignant": {
+            "mail": "Lucas.Morlet@eseo.fr",
+            "nom": "Morlet",
+            "prenom": "Lucas"
+        },
+        "GroupeEtudiant": {
+            "nom": "E4"
+        },
+        "HeuresRestantes": {
+            "CM": 10,
+            "TD": 6
+        },
+        "HeuresTotales": {
+            "CM": 10,
+            "TD": 6
+        },
+        "Nom": "Data Visualisation"
+    }
+]
