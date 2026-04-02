@@ -2,8 +2,8 @@
     {
         "Enseignant": {
             "mail": "Lucas.Morlet@eseo.fr",
-            "nom": "Lucas",
-            "prenom": "Morlet"
+            "nom": "Morlet",
+            "prenom": "Lucas"
         },
         "GroupeEtudiant": {
             "nom": "E4"
