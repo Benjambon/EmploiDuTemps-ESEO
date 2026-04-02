@@ -13,6 +13,7 @@
 #include "tests/test_salle.h"
 #include "tests/test_groupeetudiant.h"
 #include "tests/test_ecue.h"
+#include "tests/test_creneau.h"
 
 int main(int argc, char *argv[])
 {
@@ -40,6 +41,10 @@ int main(int argc, char *argv[])
     // 4. Test Ecue
     TestEcue testEcue;
     totalErrors += QTest::qExec(&testEcue, argc, argv);
+
+    // 5. Test Creneau
+    TestCreneau testCreneau;
+    totalErrors += QTest::qExec(&testCreneau, argc, argv);
 
     // Bilan global
     if (totalErrors != 0) {

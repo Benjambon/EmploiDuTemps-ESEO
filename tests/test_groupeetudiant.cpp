@@ -10,3 +10,12 @@ void TestGroupeEtudiant::testValidationNom()
     GroupeEtudiant g2("");
     QCOMPARE(g2.isNomValid(), GroupeEtudiant::NOM_VIDE);
 }
+
+void TestGroupeEtudiant::testJSON()
+{
+    GroupeEtudiant g1("E5");
+    QJsonObject json = g1.toJSON();
+    GroupeEtudiant g2 = GroupeEtudiant::fromJSON(json);
+
+    QCOMPARE(QString::fromStdString(g2.getNom()), QString("E5"));
+}
