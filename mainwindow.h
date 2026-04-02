@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <QTableWidget>
 #include <QHeaderView>
+#include "tableauxdialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -68,6 +69,7 @@ private:
     Ui::MainWindow *ui;
     QString m_dataPath;
     EmploiDuTempsDialog* m_interfaceEmploi;
+    TableauxDialog* m_interfaceTableaux;
     void init_style(void);
     void init_layout(void);
 };

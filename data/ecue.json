@@ -17,5 +17,41 @@
             "TD": 6
         },
         "Nom": "Data Visualisation"
+    },
+    {
+        "Enseignant": {
+            "mail": "Lucas.Morlet@eseo.fr",
+            "nom": "Morlet",
+            "prenom": "Lucas"
+        },
+        "GroupeEtudiant": {
+            "nom": "E4"
+        },
+        "HeuresRestantes": {
+            "CM": 10,
+            "TD": 2
+        },
+        "HeuresTotales": {
+            "CM": 10,
+            "TD": 2
+        },
+        "Nom": "DATA2"
+    },
+    {
+        "Enseignant": {
+            "mail": "Lucas.Morlet@eseo.fr",
+            "nom": "Morlet",
+            "prenom": "Lucas"
+        },
+        "GroupeEtudiant": {
+            "nom": "E5"
+        },
+        "HeuresRestantes": {
+            "CM": 8
+        },
+        "HeuresTotales": {
+            "CM": 8
+        },
+        "Nom": "data 3"
     }
 ]

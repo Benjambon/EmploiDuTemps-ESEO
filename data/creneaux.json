@@ -54,5 +54,31 @@
             "typeSalle": 0
         },
         "typeCours": "CM"
+    },
+    {
+        "Date": "Thu Apr 2 2026",
+        "Ecue": {
+            "Enseignant": {
+                "mail": "Lucas.Morlet@eseo.fr",
+                "nom": "Morlet",
+                "prenom": "Lucas"
+            },
+            "GroupeEtudiant": {
+                "nom": "E5"
+            },
+            "HeuresRestantes": {
+                "CM": 8
+            },
+            "HeuresTotales": {
+                "CM": 8
+            },
+            "Nom": "data 3"
+        },
+        "Horaire": "MATIN1",
+        "Salle": {
+            "numero": "001",
+            "typeSalle": 0
+        },
+        "typeCours": "CM"
     }
 ]

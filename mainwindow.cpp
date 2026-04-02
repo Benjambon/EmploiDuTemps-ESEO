@@ -167,6 +167,26 @@ void MainWindow::init_layout(void)
     });
 
     // ==========================================
+    // ONGLET 3 : TABLEAUX
+    // ==========================================
+    QWidget *ongletTableaux = new QWidget();
+    QVBoxLayout *layoutTableaux = new QVBoxLayout(ongletTableaux);
+
+    m_interfaceTableaux = new TableauxDialog(m_dataPath, ongletTableaux);
+    layoutTableaux->addWidget(m_interfaceTableaux);
+
+    systemeOnglets->addTab(ongletTableaux, "Tableaux ECUE");
+
+    connect(systemeOnglets, &QTabWidget::currentChanged, this, [this](int index) {
+        if (index == 1 && m_interfaceEmploi) {
+            m_interfaceEmploi->rafraichir();
+        }
+        if (index == 2 && m_interfaceTableaux) {
+            m_interfaceTableaux->rafraichir();
+        }
+    });
+
+    // ==========================================
     // APPLICATION À LA FENÊTRE
     // ==========================================
     this->setCentralWidget(systemeOnglets);

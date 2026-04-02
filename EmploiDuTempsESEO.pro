@@ -34,6 +34,7 @@ SOURCES += \
     supprimerenseignantdialog.cpp \
     supprimergroupeetudiantdialog.cpp \
     supprimersalledialog.cpp \
+    tableauxdialog.cpp \
     tests/test_ecue.cpp \
     tests/test_enseignant.cpp \
     tests/test_groupeetudiant.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     supprimerenseignantdialog.h \
     supprimergroupeetudiantdialog.h \
     supprimersalledialog.h \
+    tableauxdialog.h \
     tests/test_ecue.h \
     tests/test_enseignant.h \
     tests/test_groupeetudiant.h \
