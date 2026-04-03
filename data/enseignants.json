@@ -3,5 +3,15 @@
         "mail": "Lucas.Morlet@eseo.fr",
         "nom": "Morlet",
         "prenom": "Lucas"
+    },
+    {
+        "mail": "Thomas.Schlinquer@eseo.fr",
+        "nom": "Schlinquer",
+        "prenom": "Thomas"
+    },
+    {
+        "mail": "mariaalice.bertolim@eseo.fr",
+        "nom": "Bertolim",
+        "prenom": "Maria Alice"
     }
 ]

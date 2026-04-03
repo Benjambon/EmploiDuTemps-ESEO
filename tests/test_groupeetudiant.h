@@ -10,6 +10,7 @@ class TestGroupeEtudiant : public QObject
 
 private slots:
     void testValidationNom();
+    void testJSON();
 };
 
 #endif // TEST_GROUPEETUDIANT_H

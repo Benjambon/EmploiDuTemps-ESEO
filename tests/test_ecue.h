@@ -12,6 +12,8 @@ private slots:
     void testValidationNom();
     void testValidationHeuresTotales();
     void testValidationHeuresRestantes();
+    void testConversions();
+    void testJSON();
 };
 
 #endif // TEST_ECUE_H

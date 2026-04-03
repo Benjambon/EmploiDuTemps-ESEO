@@ -23,3 +23,29 @@ void TestEcue::testValidationHeuresRestantes()
     QCOMPARE(Ecue::isHeureRestanteValid(3, total), Ecue::HEURERESTANTE_IMPAIR);
     QCOMPARE(Ecue::isHeureRestanteValid(12, total), Ecue::HEURERESTANTE_SUPERIEUR_TOTAL); // > total
 }
+void TestEcue::testConversions()
+{
+    QCOMPARE(Ecue::typeCoursToString(eTypeCours::CM), QString("CM"));
+    QCOMPARE(Ecue::typeCoursToString(eTypeCours::TP_INFO), QString("TP_INFO"));
+    QCOMPARE(Ecue::stringToTypeCours("TD"), eTypeCours::TD);
+    QCOMPARE(Ecue::stringToTypeCours("INCONNU"), eTypeCours::DEFAULT);
+}
+
+void TestEcue::testJSON()
+{
+    Enseignant ens("Dupont", "Jean");
+    GroupeEtudiant grp("E4");
+    std::map<eTypeCours, int> heures;
+    heures[eTypeCours::CM] = 10;
+    heures[eTypeCours::TD] = 6;
+
+    Ecue ecue("Physique", ens, grp, heures);
+
+    QJsonObject json = ecue.toJSON();
+    Ecue ecue2 = Ecue::fromJSON(json);
+
+    QCOMPARE(QString::fromStdString(ecue2.getNom()), QString("Physique"));
+    QCOMPARE(QString::fromStdString(ecue2.getEnseignant().getNom()), QString("Dupont"));
+    QCOMPARE(ecue2.getHeuresTotales()[eTypeCours::CM], 10);
+    QCOMPARE(ecue2.getHeuresTotales()[eTypeCours::TD], 6);
+}

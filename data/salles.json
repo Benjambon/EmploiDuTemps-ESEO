@@ -2,5 +2,13 @@
     {
         "numero": "001",
         "typeSalle": 0
+    },
+    {
+        "numero": "002",
+        "typeSalle": 1
+    },
+    {
+        "numero": "003",
+        "typeSalle": 2
     }
 ]

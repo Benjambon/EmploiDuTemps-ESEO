@@ -11,6 +11,7 @@ class TestSalle : public QObject
 private slots:
     void testValidationNumero();
     void testValidationType();
+    void testJSON();
 };
 
 #endif // TEST_SALLE_H
