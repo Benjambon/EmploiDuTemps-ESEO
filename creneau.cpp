@@ -88,7 +88,6 @@ Creneau::code_erreur_date Creneau::isDateValid() const {
     if (!this->date.isValid()) {
         return DATE_INVALIDE;
     }
-    // Empêcher de placer des cours le samedi (6) ou le dimanche (7)
     if (this->date.dayOfWeek() == 6 || this->date.dayOfWeek() == 7) {
         return DATE_WEEKEND;
     }
@@ -103,7 +102,6 @@ Creneau::code_erreur_typeCours Creneau::isTypeCoursValid() const {
 }
 
 Creneau::code_erreur_ecue Creneau::isEcueValid() const {
-    // Si le nom de l'ECUE est vide, c'est qu'il n'est pas correctement défini
     if (this->ecue.getNom().empty()) {
         return ECUE_NONDEFINIT;
     }
@@ -111,7 +109,6 @@ Creneau::code_erreur_ecue Creneau::isEcueValid() const {
 }
 
 Creneau::code_erreur_salle Creneau::isSalleValid() const {
-    // Le constructeur par défaut de Salle initialise le numéro à "000"
     if (this->salle.getNumero() == "000" || this->salle.getNumero().empty()) {
         return SALLE_NONDEFINIT;
     }

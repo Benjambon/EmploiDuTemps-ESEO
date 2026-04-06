@@ -8,10 +8,10 @@ void TestEcue::testValidationNom()
 
 void TestEcue::testValidationHeuresTotales()
 {
-    QCOMPARE(Ecue::isHeureTotalValid(4), Ecue::HEURETOTAL_OK);       // Pair, positif
-    QCOMPARE(Ecue::isHeureTotalValid(0), Ecue::HEURETOTAL_NUL);      // Zéro
-    QCOMPARE(Ecue::isHeureTotalValid(-2), Ecue::HEURETOTAL_NEGATIF); // Négatif
-    QCOMPARE(Ecue::isHeureTotalValid(3), Ecue::HEURETOTAL_IMPAIR);   // Impair
+    QCOMPARE(Ecue::isHeureTotalValid(4), Ecue::HEURETOTAL_OK);
+    QCOMPARE(Ecue::isHeureTotalValid(0), Ecue::HEURETOTAL_NUL);
+    QCOMPARE(Ecue::isHeureTotalValid(-2), Ecue::HEURETOTAL_NEGATIF);
+    QCOMPARE(Ecue::isHeureTotalValid(3), Ecue::HEURETOTAL_IMPAIR);
 }
 
 void TestEcue::testValidationHeuresRestantes()
@@ -21,7 +21,7 @@ void TestEcue::testValidationHeuresRestantes()
     QCOMPARE(Ecue::isHeureRestanteValid(0, total), Ecue::HEURERESTANTE_NUL);
     QCOMPARE(Ecue::isHeureRestanteValid(-2, total), Ecue::HEURERESTANTE_NEGATIF);
     QCOMPARE(Ecue::isHeureRestanteValid(3, total), Ecue::HEURERESTANTE_IMPAIR);
-    QCOMPARE(Ecue::isHeureRestanteValid(12, total), Ecue::HEURERESTANTE_SUPERIEUR_TOTAL); // > total
+    QCOMPARE(Ecue::isHeureRestanteValid(12, total), Ecue::HEURERESTANTE_SUPERIEUR_TOTAL);
 }
 void TestEcue::testConversions()
 {

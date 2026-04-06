@@ -9,7 +9,6 @@ class TestEnseignant : public QObject
     Q_OBJECT
 
 private slots:
-    // Ces fonctions seront exécutées automatiquement par QTest
     void testValidationNom();
     void testValidationMail();
     void testJSON();

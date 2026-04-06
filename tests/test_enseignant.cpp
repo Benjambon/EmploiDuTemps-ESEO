@@ -14,11 +14,9 @@ void TestEnseignant::testValidationNom()
 
 void TestEnseignant::testValidationMail()
 {
-    // Test constructeur par défaut (génère prenom.nom@eseo.fr)
     Enseignant e1("Trenchant", "Vincent");
     QCOMPARE(e1.isMailValid(), Enseignant::MAIL_OK);
 
-    // Test mail invalide
     Enseignant e2("Doe", "John", "john.doe_sans_arobase.com");
     QCOMPARE(e2.isMailValid(), Enseignant::MAIL_SYNTAXE);
 }

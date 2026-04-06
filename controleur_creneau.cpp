@@ -25,10 +25,8 @@ Creneau* Controleur_creneau::creationCreneau(const std::vector<Ecue>& listeE, co
         Ecue ecue = listeE[dialog.getEcueIndex()];
         Salle salle = listeS[dialog.getSalleIndex()];
 
-        // Création d'un objet temporaire pour utiliser ses méthodes de validation
         Creneau tempCreneau(horaire, date, ecue, typeCours, salle);
 
-        // 1. Validation de l'intégrité des données
         if (tempCreneau.isDateValid() == Creneau::DATE_NULLE || tempCreneau.isDateValid() == Creneau::DATE_INVALIDE) {
             QMessageBox::warning(&dialog, "Erreur", "La date saisie n'est pas valide.");
             continue;
@@ -49,11 +47,10 @@ Creneau* Controleur_creneau::creationCreneau(const std::vector<Ecue>& listeE, co
             continue;
         }
 
-        // 2. Vérification des quotas d'heures (Évite les heures négatives)
         int heuresConsommees = 0;
         for (const Creneau& c : listeC) {
             if (c.getEcue().getNom() == ecue.getNom() && c.getTypeCours() == typeCours) {
-                heuresConsommees += 2; // Chaque créneau dure 2 heures
+                heuresConsommees += 2;
             }
         }
 
@@ -75,7 +72,6 @@ Creneau* Controleur_creneau::creationCreneau(const std::vector<Ecue>& listeE, co
             continue;
         }
 
-        // 3. Validation des conflits dans l'emploi du temps
         bool conflit = false;
         QString msgConflit = "";
 

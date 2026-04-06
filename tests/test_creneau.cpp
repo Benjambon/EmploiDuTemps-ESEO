@@ -13,14 +13,12 @@ void TestCreneau::testValidationHoraire()
 void TestCreneau::testValidationDate()
 {
     Creneau c;
-    c.setDate(QDate()); // Date nulle
+    c.setDate(QDate());
     QCOMPARE(c.isDateValid(), Creneau::DATE_NULLE);
 
-    // Un samedi (le 4 avril 2026 est un samedi)
     c.setDate(QDate(2026, 4, 4));
     QCOMPARE(c.isDateValid(), Creneau::DATE_WEEKEND);
 
-    // Un lundi valide
     c.setDate(QDate(2026, 4, 6));
     QCOMPARE(c.isDateValid(), Creneau::DATE_OK);
 }
@@ -28,11 +26,9 @@ void TestCreneau::testValidationDate()
 void TestCreneau::testValidationEcueEtSalle()
 {
     Creneau c;
-    // Test initial (vide)
     QCOMPARE(c.isEcueValid(), Creneau::ECUE_NONDEFINIT);
     QCOMPARE(c.isSalleValid(), Creneau::SALLE_NONDEFINIT);
 
-    // Ajout d'une salle valide
     Salle s("104", TypeSalle::SALLE);
     c.setSalle(s);
     QCOMPARE(c.isSalleValid(), Creneau::SALLE_OK);
@@ -47,7 +43,6 @@ void TestCreneau::testConversions()
 
 void TestCreneau::testJSON()
 {
-    // Préparation d'un créneau factice
     Enseignant ens("Dupont", "Jean");
     GroupeEtudiant grp("E4");
     std::map<eTypeCours, int> heures;
@@ -57,7 +52,6 @@ void TestCreneau::testJSON()
 
     Creneau c(eHoraire::MATIN1, QDate(2026, 4, 6), ecue, eTypeCours::CM, salle);
 
-    // Test toJSON -> fromJSON
     QJsonObject json = c.toJSON();
     Creneau c2 = Creneau::fromJSON(json);
 

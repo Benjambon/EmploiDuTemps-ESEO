@@ -69,7 +69,6 @@ int EcueDialog::getGroupeIndex(void) const { return this->comboGroupe->currentDa
 std::map<eTypeCours, int> EcueDialog::getHeuresChoisies(void) const
 {
     std::map<eTypeCours, int> heures;
-    // On ne récupère que les types de cours où l'utilisateur a mis des heures > 0
     for (auto const& pair : mapSpins) {
         if (pair.second->value() > 0) {
             heures[pair.first] = pair.second->value();

@@ -10,7 +10,6 @@ Salle* Controleur_salle::creationSalle(void)
 {
     SalleDialog dialog(nullptr);
 
-    // On initialise avec des erreurs pour forcer l'entrée dans la boucle de validation
     Salle::code_erreur_numero err_num = Salle::NUMERO_PAS_CHIFFRE;
     Salle::code_erreur_type err_type = Salle::TYPE_INVALIDE;
 
@@ -19,15 +18,12 @@ Salle* Controleur_salle::creationSalle(void)
         dialog.show();
         bool res_exec = dialog.exec();
 
-        // Si l'utilisateur clique sur Annuler ou ferme la fenêtre
         if (res_exec == QDialog::Rejected) {
             return nullptr;
         }
 
-        // Création d'une salle temporaire pour utiliser les méthodes de validation du modèle
         Salle tempSalle(dialog.getNumero(), dialog.getTypeSalle());
 
-        // 1. Test du numéro de salle
         err_num = tempSalle.isNumeroValid();
         switch (err_num)
         {
@@ -43,7 +39,6 @@ Salle* Controleur_salle::creationSalle(void)
             break;
         }
 
-        // 2. Test du type de salle
         err_type = tempSalle.isTypeValid();
         switch (err_type)
         {
@@ -57,7 +52,6 @@ Salle* Controleur_salle::creationSalle(void)
         }
     }
 
-    // Sortie de la boucle : les données sont valides
     return new Salle(dialog.getNumero(), dialog.getTypeSalle());
 }
 

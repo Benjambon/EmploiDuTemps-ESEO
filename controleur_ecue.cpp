@@ -22,7 +22,6 @@ Ecue* Controleur_ecue::creationEcue(const std::vector<Enseignant>& listE, const 
         std::string nom = dialog.getNom();
         std::map<eTypeCours, int> heures = dialog.getHeuresChoisies();
 
-        // Vérification des heures impaires
         bool contientHeureImpaire = false;
         for (auto const& pair : heures) {
             if (Ecue::isHeureTotalValid(pair.second) == Ecue::HEURETOTAL_IMPAIR) {

@@ -41,7 +41,6 @@ public:
 
     std::string to_string() const;
 
-    // Méthodes de validation adaptées pour vérifier des valeurs isolées
     static code_erreur_nom isNomValid(const std::string& nomTest);
     static code_erreur_heureTotal isHeureTotalValid(int heureTotalTest);
     static code_erreur_heureRestante isHeureRestanteValid(int heureRestanteTest, int heureTotalAssociee);

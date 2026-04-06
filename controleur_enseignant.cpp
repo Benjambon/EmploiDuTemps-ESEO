@@ -28,13 +28,11 @@ Enseignant* Controleur_enseignant::creationEnseignant(void)
 
         Enseignant tempEnseignant;
         if (mail.empty()) {
-            // Utilise le constructeur qui auto-génère l'e-mail
             tempEnseignant = Enseignant(nom, prenom);
         } else {
             tempEnseignant = Enseignant(nom, prenom, mail);
         }
 
-        // 1. Validation du nom
         err_nom = tempEnseignant.isNomValid();
         switch (err_nom)
         {
@@ -47,7 +45,6 @@ Enseignant* Controleur_enseignant::creationEnseignant(void)
             break;
         }
 
-        // 2. Validation du prénom
         err_prenom = tempEnseignant.isPrenomValid();
         switch (err_prenom)
         {
@@ -60,7 +57,6 @@ Enseignant* Controleur_enseignant::creationEnseignant(void)
             break;
         }
 
-        // 3. Validation de l'e-mail (uniquement si le nom et prénom sont OK pour éviter l'accumulation de pop-ups)
         err_mail = tempEnseignant.isMailValid();
         if (err_nom == Enseignant::NOM_OK && err_prenom == Enseignant::PRENOM_OK) {
             switch (err_mail)
