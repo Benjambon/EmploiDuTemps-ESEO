@@ -3,6 +3,7 @@ build/
 build-*/
 *.Debug/
 *.Release/
+*data/
 
 # Fichiers générés par Qt
 *.pro.user
